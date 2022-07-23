@@ -109,8 +109,7 @@ export class LevelSystem {
 
 	// if out of levels, adds special level, otherwise, iterates over the current levels
 	addNewLevel() {
-
-		if(this.levels.length > 0) {
+		if (this.levels.length > 0) {
 			this.currentLVL += 1;
 			this.lvl = this.levels[0];
 			this.levels.splice(0, 1);
@@ -120,7 +119,7 @@ export class LevelSystem {
 			this.alternateSpawn = false;
 		}
 		else {
-			if(!this.protect_change) {
+			if (!this.protect_change) {
 				this.addSpecialLevel();
 				this.currentLVL += 1;
 				this.lvl = this.levels[0];
@@ -137,7 +136,7 @@ export class LevelSystem {
 	// main function for spawning enemies
 	spawnEnemy() {
 		// if it's first level
-		if(!this.justSet) {
+		if (!this.justSet) {
 			this.levels = Array.from(Engine.getStaticLevels());
 			this.currentLVL = 1;
 			this.lastTenLevels = Array.from(this.levels);
@@ -150,16 +149,16 @@ export class LevelSystem {
 		}
 
 		this.tick += 1;
-		if(this.tick === this.fps / this.spawnPerSecond) {
+		if (this.tick === this.fps / this.spawnPerSecond) {
 			 let enemyObject = new Enemy(35, 35, Direction.right, 5, MOB_TYPE.footman, 1, 1);
 			 Engine.addEnemy(enemyObject);
 		}
 
 		// if it's a tick ( spawn per second )
-		if(this.tick === this.fps / this.spawnPerSecond) {
+		if (this.tick === this.fps / this.spawnPerSecond) {
 			if (this.tick_between_levels === 0) {
-				if(this.enemies.length > 0) {
-					if(!this.lvl.bossLVL) {
+				if (this.enemies.length > 0) {
+					if (!this.lvl.bossLVL) {
 						this.spawnFunction();
 					}
 					else {
@@ -175,15 +174,14 @@ export class LevelSystem {
 			}
 			this.tick = 0;
 
-			if(this.enemies.length === 0) {
+			if (this.enemies.length === 0) {
 				
-				if(!this.lvl.bossLVL) {
+				if (!this.lvl.bossLVL) {
 					this.addNewLevel();
 					
 				}
 				else {
-					// in case of boss level, wait until it's over to spawn next level
-					if(Engine.getEnemyList().length === 0) {
+					if (Engine.getEnemyList().length === 0) {
 						this.addNewLevel();
 					}
 				}
@@ -191,13 +189,12 @@ export class LevelSystem {
 		}
 	}
 
-	// handles the special levels generation
 	addSpecialLevel() {
-		var lvlType;
-		if(this.specialLevelTypes.length > 0) {
+		let lvlType;
+		if (this.specialLevelTypes.length > 0) {
 			lvlType = this.specialLevelTypes[0];
 			this.specialLevelTypes.splice(0, 1);
-			if(lvlType === "doublePath") {
+			if (lvlType === "doublePath") {
 				this.lastTenLevels.forEach(function(element) {
 					element.numberEnemies *= 2;
 					element.enemyList = [];
@@ -209,12 +206,12 @@ export class LevelSystem {
 				
 				
 			}
-			if(lvlType === "buffUP") {
+			if (lvlType === "buffUP") {
 				this.customHpMultiplier += 1;
 				this.customDmgMultiplier += 1;
 				
 			}
-			if(lvlType === "doubleEnemy") {
+			if (lvlType === "doubleEnemy") {
 				this.lastTenLevels.forEach(function(element) {
 					element.numberEnemies *= 2;
 					element.enemyList = [];
@@ -223,7 +220,7 @@ export class LevelSystem {
 				
 
 			}
-			if(lvlType === "ARMAGEDON") {
+			if (lvlType === "ARMAGEDON") {
 				this.lastTenLevels.forEach(function(element) {
 					element.numberEnemies *= 2;
 					element.enemyList = [];
@@ -232,16 +229,11 @@ export class LevelSystem {
 				this.customHpMultiplier += 2;
 				this.customDmgMultiplier += 2;
 				this.specialLevelTypes.push("ARMAGEDON");
-				
-
 			}
 		}
 		this.protect_change = !this.protect_change;
 		// update levels
 		this.levels = Array.from(this.lastTenLevels);
-		
-
 	}
-
 }
 

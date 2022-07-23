@@ -4,15 +4,6 @@ const randomIntFromInterval = (min:number,max: number) => {
 	return Math.floor(Math.random()*(max-min+1)+min);
 };
 
-/**
- * @description Level Constructor
- * @param {*} numLevel the level number
- * @param {*} difficulty the selected difficulty
- * @param {*} numberEnemies the number of enemies to spawn
- * @param {*} typeEnemies the types of enemies (if multiple types, will spawn random between types)
- * @param {*} isBoss is a boss level (boolean value)
- * @param {*} spawnPoints at which spawn point to summon them
- */
 export class Level {
 	difficulty: any;
 	level: number;
@@ -41,11 +32,9 @@ export class Level {
 		this.numberEnemies = numberEnemies;
 		this.typeEnemies = typeEnemies;
 
-		// treat array or not (can pass either a type or an array of types)
-		if(Array.isArray(typeEnemies)) {
+		if (Array.isArray(typeEnemies)) {
 			this.typeEnemies = typeEnemies;
-		}
-		else {
+		} else {
 			this.typeEnemies = [typeEnemies];
 		}
 
@@ -64,11 +53,11 @@ export class Level {
 		this.populateEnemyList();
 	}
 
-	populateEnemyList() {
-		for(let i = 0; i < this.numberEnemies; i++){
+	populateEnemyList(): void {
+		for (let i = 0; i < this.numberEnemies; i++) {
 			const randType = randomIntFromInterval(0, this.typeEnemies.length-1);
 			const selectType = this.typeEnemies[randType];
 			this.enemyList.push(selectType);
 		}
 	}
-}//Level
+}

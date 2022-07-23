@@ -1,12 +1,5 @@
-/**
- * @description HP Constructor
- * @param {*} px position Ox
- * @param {*} py position Oy
- * @param {*} sizeX Size for Ox
- * @param {*} sizeY Size for Oy
- * @param {*} value Hp value
- */
 import {Engine} from "../Engine.";
+import {Enemy} from "./Enemy";
 
 export class Hp {
 	pozX: number;
@@ -33,15 +26,13 @@ export class Hp {
 
 	}
 
-	//render the hp bar
-	render() {
+	render(): void {
 		Engine.getCanvasContext().fillStyle = "red";
 		Engine.getCanvasContext().fillRect(this.pozX, this.pozY, this.hpSize * this.value , this.sizeY);
 	}
 
-	//place the hp bar above the enemy with 10 px
-	updatePosition(enemy: any) {
-		this.pozX = enemy.pozX;
-		this.pozY = enemy.pozY - 10;
+	updatePosition(enemy: Enemy): void {
+		this.pozX = enemy.px;
+		this.pozY = enemy.py - 10;
 	}
 }

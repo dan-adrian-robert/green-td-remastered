@@ -1,12 +1,10 @@
-/**
- * @description Get the mouse position relative to the page
- * @param {*} evt  the event that triggers after the mouse is moved
- */
 import {Border} from "./objects/Border";
 import {Engine} from "./Engine.";
 import { FOLDER_PATHS } from "../imageTypes";
+import {MousePosition} from "../types";
+import {Enemy} from "./objects/Enemy";
 
-export const calculateMousePos = (evt: any) => {
+export const calculateMousePos = (evt: any): MousePosition => {
 	const rect = Engine.getCanvas().getBoundingClientRect();
 	const root = document.documentElement;
 	const mouseX = evt.clientX - rect.left - root.scrollLeft;
@@ -18,20 +16,17 @@ export const calculateMousePos = (evt: any) => {
 	};
 }
 
-/**
- * @description Collision between bullets and enemies
- */
 export const collideBulletsEnemies = () => {
 	const listEnemy = Engine.getEnemyList();
 	const listBullets = Engine.getBulletList();
 
 	for(let i = 0; i < listEnemy.length; i++) {
 		for(let j = 0; j < listBullets.length; j++) {
-				const ex = listEnemy[i].pozX + listEnemy[i].sizeX / 2;
-				const ey = listEnemy[i].pozY + listEnemy[i].sizeY / 2;
+				const ex = listEnemy[i].px + listEnemy[i].sizeX / 2;
+				const ey = listEnemy[i].py + listEnemy[i].sizeY / 2;
 
-				const bx = listBullets[j].pozX + listBullets[j].sizeX / 2;
-				const by = listBullets[j].pozY + listBullets[j].sizeY / 2;
+				const bx = listBullets[j].px + listBullets[j].sizeX / 2;
+				const by = listBullets[j].py + listBullets[j].sizeY / 2;
 
 				const rx = (listEnemy[i].sizeX + listBullets[j].sizeY) / 2;
 				const ry = (listEnemy[i].sizeY + listBullets[j].sizeY) / 2;
@@ -56,13 +51,13 @@ export const collideAlliesEnemies = () => {
 	const listEnemy = Engine.getEnemyList();
 	const listAlly = Engine.getAllyList();
 
- 	for(let i = 0; i < listEnemy.length; i++) {
- 		for(let j = 0; j < listAlly.length; j++) {
- 				const ex = listEnemy[i].pozX + listEnemy[i].sizeX / 2;
- 				const ey = listEnemy[i].pozY + listEnemy[i].sizeY / 2;
+ 	for (let i = 0; i < listEnemy.length; i++) {
+ 		for (let j = 0; j < listAlly.length; j++) {
+ 				const ex = listEnemy[i].px + listEnemy[i].sizeX / 2;
+ 				const ey = listEnemy[i].py + listEnemy[i].sizeY / 2;
 
- 				const bx = listAlly[j].pozX + listAlly[j].sizeX / 2;
- 				const by = listAlly[j].pozY + listAlly[j].sizeY / 2;
+ 				const bx = listAlly[j].px + listAlly[j].sizeX / 2;
+ 				const by = listAlly[j].py + listAlly[j].sizeY / 2;
 
  				const rx = (listEnemy[i].sizeX + listAlly[j].sizeY - 60) / 2;
  				const ry = (listEnemy[i].sizeY + listAlly[j].sizeY - 30) / 2;
@@ -77,20 +72,21 @@ export const collideAlliesEnemies = () => {
  }
 
 export const collideTrapsEnemies = () => {
-	const listEnemy = Engine.getEnemyList();
+	const listEnemy: Enemy[] = Engine.getEnemyList();
 	const listTraps = Engine.getAllyList();
 
-	for(let i = 0; i < listEnemy.length; i++) {
+	for (let i = 0; i < listEnemy.length; i++) {
 		for(let j = 0; j < listTraps.length; j++) {
-			const ex = listEnemy[i].pozX + listEnemy[i].sizeX / 2;
-			const ey = listEnemy[i].pozY + listEnemy[i].sizeY / 2;
+			const ex = listEnemy[i].px + listEnemy[i].sizeX / 2;
+			const ey = listEnemy[i].py + listEnemy[i].sizeY / 2;
 
-			const bx = listTraps[j].pozX + listTraps[j].sizeX / 2;
-			const by = listTraps[j].pozY + listTraps[j].sizeY / 2;
+			const bx = listTraps[j].px + listTraps[j].sizeX / 2;
+			const by = listTraps[j].py + listTraps[j].sizeY / 2;
 
 			const rx = (listEnemy[i].sizeX + listTraps[j].sizeX - 80) / 2;
 			const ry = (listEnemy[i].sizeY + listTraps[j].sizeY - 20) / 2;
 
+			/*
 			if (listTraps[j].enemies.includes(i + listEnemy[i].enemyType) === false &&
 				 		listTraps[j].enemies.length < listTraps[j].numberOfEnemies) {
 				 //collision happens
@@ -103,27 +99,25 @@ export const collideTrapsEnemies = () => {
 					 listTraps[j].enemies.push(i + listEnemy[i].enemyType);
 				}
 			}
+			*/
 		}
 	}
 }
 
-export const checkIfAllyOnFinalCp = () => {
+export const checkIfAllyOnFinalCp = (): void => {
 	const listAlly = Engine.getAllyList();
-	for(let i = 0; i < listAlly.length; i++) {
-		if(listAlly[i].pozX < 20) {
+	for (let i = 0; i < listAlly.length; i++) {
+		if (listAlly[i].px < 20) {
 			listAlly.splice(i, 1);
 		}
 	}
 }
 
-/**
- * @description Removes any monsters that do not have hd anymore.
- */
-export const eraseEnemies = () => {
+export const eraseEnemies = (): void => {
 	const listEnemy = Engine.getEnemyList();
 
-	for(let i = 0; i < listEnemy.length; i++) {
-		if(listEnemy[i].hp.value <= 0) {
+	for (let i = 0; i < listEnemy.length; i++) {
+		if (listEnemy[i].hp.value <= 0) {
 			listEnemy[i].applySoundLogic();
 			Engine.addMoney(listEnemy[i].bounty);
 			listEnemy.splice(i,1);
@@ -131,9 +125,6 @@ export const eraseEnemies = () => {
 	}
 }
 
-/**
- * @description Removes any traps.
- */
 export const eraseTraps = () => {
 	const listTraps = Engine.getTrapList();
 
@@ -163,11 +154,10 @@ export const collideEnemiesBase = () => {
 	const bx = baseCp.x + baseCp.size/2;
 	const by = baseCp.y + baseCp.size/2;
 
-	const listEnemy = Engine.getEnemyList();
-	for(let i = 0; i < listEnemy.length; i++) {
-		//the enemy middle coordinates
-		const ex = listEnemy[i].pozX + listEnemy[i].sizeX / 2;
-		const ey = listEnemy[i].pozY + listEnemy[i].sizeY / 2;
+	const listEnemy: Enemy[] = Engine.getEnemyList();
+	for (let i = 0; i < listEnemy.length; i++) {
+		const ex = listEnemy[i].px + listEnemy[i].sizeX / 2;
+		const ey = listEnemy[i].py + listEnemy[i].sizeY / 2;
 
 		const rx = (listEnemy[i].sizeX + baseCp.size) / 2;
 		const ry = (listEnemy[i].sizeY + baseCp.size) / 2;
@@ -187,12 +177,12 @@ export const collideEnemiesBase = () => {
 
 
 export const initGame = () => {
-	const boder: Border = new Border(
+	const border: Border = new Border(
 		Engine.getImageMap()[FOLDER_PATHS.UI].border,
 		Engine.getImageMap()[FOLDER_PATHS.UI].border,
 		500, 500,25,27);
 
-	Engine.setBorder(boder);
+	Engine.setBorder(border);
 	// const borderMenu = new Image(100, 100);
 	// borderMenu.src = "images/ui/menuBorder.png";
 	//

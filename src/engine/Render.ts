@@ -13,27 +13,11 @@ export const renderLevel = () => {
 	Engine.getCanvasContext().fillStyle = "yellow";
 }
 
-/**
- * @description Draw a rectangle
- * @param {*} leftX the start point on x
- * @param {*} topY the start point on y
- * @param {*} width width of rectangle
- * @param {*} height height of rectangle
- * @param {*} drawColor the color of the rectangle
- */
 export const colorRect = (leftX:number, topY:number, width: number, height:number, drawColor: any) => {
 	Engine.getCanvasContext().fillStyle = drawColor;
 	Engine.getCanvasContext().fillRect(leftX, topY, width, height);
 }
 
-
-/**
- * @description Draw circle
- * @param {*} centerX the center of the circle pos X
- * @param {*} centerY the center of the circle pos Y
- * @param {*} size the radius of the circle
- * @param {*} color the color of the circle
- */
 export const colorCircle = (centerX: number, centerY: number, size: number, color: any) => {
 	Engine.getCanvasContext().fillStyle = color;
 	Engine.getCanvasContext().beginPath();
@@ -41,12 +25,12 @@ export const colorCircle = (centerX: number, centerY: number, size: number, colo
 	Engine.getCanvasContext().fill();
 }
 
-//render a list of objects if the condition is true
-export const renderObjectList = (list: any[], condition: boolean) => {
-	if(!condition)
+export const renderObjectList = (list: any[], condition: boolean): void => {
+	if(!condition) {
 		return;
+	}
 
-	for(let i = 0; i < list.length; i++) {
+	for (let i = 0; i < list.length; i++) {
 		list[i].render(condition);
 	}
 }

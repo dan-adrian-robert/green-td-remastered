@@ -189,8 +189,8 @@ export class Menu {
 	render() {
 		const c = Engine.getCanvasContext();
 		c.font = '25pt Calibri';
-		const bx = Engine.getBorder().sx;
-		const by = Engine.getBorder().sy;
+		const bx = Engine.getBorder().px;
+		const by = Engine.getBorder().py;
 
 		c.drawImage(this.bgImg,
 					0 ,0, this.bgSw, this.bgSh, 
@@ -225,8 +225,8 @@ export class Menu {
 	renderDifficulty() {
 		const c = Engine.getCanvasContext();
 		c.font = '25pt Calibri';//set the font
-		const bx = Engine.getBorder().sx;
-		const by = Engine.getBorder().sy;
+		const bx = Engine.getBorder().px;
+		const by = Engine.getBorder().py;
 		
 		c.drawImage(this.bgImg,
 					0 ,0, this.bgSw, this.bgSh, 
@@ -255,8 +255,8 @@ export class Menu {
 
 	renderGameOverMenu() {
 		const c = Engine.getCanvasContext();
-		const bx = Engine.getBorder().sx;
-		const by = Engine.getBorder().sy;
+		const bx = Engine.getBorder().px;
+		const by = Engine.getBorder().py;
 		c.drawImage(this.goImg,
 					0 ,0, this.goSw, this.goSh,
 					bx, by, Engine.getCanvas().width - 2 * bx , Engine.getCanvas().height - 2 * by);

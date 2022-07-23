@@ -1,29 +1,29 @@
 export class Sprite {
-    sx: number;
-    sy: number;
-    sWidth:number;
-    sHeight: number;
-    dx: number;
-    dy: number;
-    dWidth: number;
-    dHeight: number;
+    spx: number;
+    spy: number;
+    spSizeX:number;
+    spSizeY: number;
+    px: number;
+    py: number;
+    sizeX: number;
+    sizeY: number;
 
     image: any;
 
-    constructor(image: any, sx: number, sy: number, sWidth:number, sHeight: number,
-                dx: number, dy: number, dWidth: number, dHeight: number) {
+    constructor(image: any, spx: number, spy: number, spSizeX:number, spSizeY: number,
+                px: number, py: number, sizeX: number, sizeY: number) {
 
-        this.sx = sx;
-        this.sy = sy;
+        this.spx = spx;
+        this.spy = spy;
 
-        this.sWidth = sWidth;
-        this.sHeight = sHeight;
+        this.spSizeX = spSizeX;
+        this.spSizeY = spSizeY;
 
-        this.dx = dx;
-        this.dy = dy;
+        this.px = px;
+        this.py = py;
 
-        this.dWidth = dWidth;
-        this.dHeight = dHeight;
+        this.sizeX = sizeX;
+        this.sizeY = sizeY;
 
         this.image = image;
     }

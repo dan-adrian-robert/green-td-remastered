@@ -10,28 +10,28 @@ export class Base extends Sprite {
 
         super(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
 
-        this.hp = new Hp(this.sx + 55, this.sy + 10, 100, 8, 100);
+        this.hp = new Hp(this.px + 55, this.py + 10, 100, 8, 100);
     }
 
-    applyLogic() {
+    applyLogic(): void {
         this.render();
         this.renderHp();
         this.checkHp();
         this.hp.render();
     }
 
-    render() {
-        Engine.getCanvasContext().drawImage(this.image, 0, 0, this.sWidth, this.sHeight, this.dx, this.dy, this.dWidth, this.dHeight);
+    render(): void {
+        Engine.getCanvasContext().drawImage(this.image, 0, 0, this.spSizeX, this.spSizeY, this.px, this.py, this.sizeX, this.sizeY);
     }
 
-     renderHp() {
+     renderHp(): void {
         this.hp.render();
-         Engine.getCanvasContext().font = "25px Arial";
-         Engine.getCanvasContext().fillText(this.hp.value + "%", 800, 60);
+        Engine.getCanvasContext().font = "25px Arial";
+        Engine.getCanvasContext().fillText(this.hp.value + "%", 800, 60);
     }
 
-   checkHp() {
-        if(this.hp.value <= 0 ) {
+   checkHp(): void {
+        if (this.hp.value <= 0 ) {
             Engine.getGameState().loseGame();
         }
     }

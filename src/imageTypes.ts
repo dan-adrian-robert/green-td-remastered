@@ -63,6 +63,7 @@ export type GAME_ASSET_FORMAT = {
         frostTower: any,
         tower:  any,
         towersV1:  any,
+        fireTower: any,
     }
     [FOLDER_PATHS.TRAPS]: {
         fire: any,

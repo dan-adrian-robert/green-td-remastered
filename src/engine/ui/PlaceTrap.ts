@@ -1,47 +1,23 @@
 import {Trap, trapTypes} from "../objects/Trap";
 import {Engine} from "../Engine.";
+import {MousePosition} from "../../types";
+import {Sprite} from "../objects/Sprite";
 
-export class PlaceTrap {
-
+export class PlaceTrap extends Sprite {
 	buildMenuImage: any;
-	sizeX: number;
-	sizeY: number;
-
-	sw: number;
-	sh: number;
-
-	spriteSizeX: number;
-	spriteSizeY: number;
-
-	startX: number;
-	startY: number;
-
 	buildImageSize: number;
 	trapPozX: number;
 	trapPozY: number;
-	imagePozList: any[];
+	imagePozList: {pozX: number, pozY: number, sx: number, sy : number, type: any, image: any}[];
 	priceList: any[];
-	buildCollisionBox: any[];
+	buildCollisionBox: {x: number, y: number, size: number}[];
 	indexTowerBuilded: number;
-
 	noGold: any;
 
 	constructor (image: any, sw: number, sh: number, sizeX: number, sizeY: number) {
+		super(image, 0,0,100,100,0, 0, sizeX, sizeY);
+
 		this.buildMenuImage = image;
-		this.sizeX = sizeX ;
-		this.sizeY = sizeY;
-		this.sw = sw ;
-		this.sh = sh;
-
-		// The sprite image
-		this.spriteSizeX = 100;
-		this.spriteSizeY = 100;
-
-		// The start position of the trap menu
-		this.startX = 0;
-		this.startY = 0;
-
-		// Build option image size
 		this.buildImageSize = 0;
 
 		this.trapPozX = 0;
@@ -79,23 +55,19 @@ export class PlaceTrap {
 		];
 
 		// the mine trap image
-		var explosion = new Image(this.imagePozList[0].sx,
-							  this.imagePozList[0].sy);
+		const explosion = new Image(this.imagePozList[0].sx, this.imagePozList[0].sy);
 		explosion.src = "images/traps/mine.png";
 
 		// the fire trap image
-		var fire = new Image(this.imagePozList[1].sx,
-							  this.imagePozList[1].sy);
+		const fire = new Image(this.imagePozList[1].sx, this.imagePozList[1].sy);
 		fire.src = "images/traps/fire.png";
 
 		// the ice spikes trap image
-		var iceSpikes = new Image(this.imagePozList[2].sx,
-							  this.imagePozList[2].sy);
+		const iceSpikes = new Image(this.imagePozList[2].sx, this.imagePozList[2].sy);
 		iceSpikes.src = "images/traps/ice_spikes.png";
 
 		// the poison trap image
-		var poison = new Image(this.imagePozList[3].sx,
-							  this.imagePozList[3].sy);
+		const poison = new Image(this.imagePozList[3].sx, this.imagePozList[3].sy);
 		poison.src = "images/traps/poison.png";
 
 		this.imagePozList[0].image = explosion;
@@ -108,10 +80,9 @@ export class PlaceTrap {
 		this.imagePozList[3].type = "poison";
   }
 
-  // Update the position of the trap menu.
-	updatePozition(mousePos: any) {
-		this.startX = mousePos.x - this.sw / 2.1;
-		this.startY = mousePos.y - this.sh / 2.1;
+	updatePozition(mousePos: MousePosition) {
+		this.px = mousePos.x - this.spSizeX / 2.1;
+		this.py = mousePos.y - this.spSizeY / 2.1;
 		this.trapPozX = mousePos.x - 25;
 		this.trapPozY = mousePos.y - 25;
 
@@ -119,28 +90,25 @@ export class PlaceTrap {
 		this.updateTrapImagesPozition();
 		this.updateCollisionBoxPozition();
 		this.updatePriceList();
-	}//updatePozition
+	}
 
-	// Render function for the trap menu.
-	// Render the menu image and also the trap images.
 	render(condition: boolean) {
-    if (condition) {
-		Engine.getCanvasContext().drawImage(this.buildMenuImage,
-								0, 0, this.sw, this.sh,
-								this.startX, this.startY, this.sizeX, this.sizeY);
+		if (condition) {
+			Engine.getCanvasContext().drawImage(this.buildMenuImage,
+									0, 0, this.spSizeX, this.spSizeY,
+									this.px, this.py, this.sizeX, this.sizeY);
 
-		//draw the images for the traps
-		for(let i = 0; i < 4; i++ ) {
-			Engine.getCanvasContext().drawImage(this.imagePozList[i].image,
-									0, 0,
-									this.imagePozList[i].sx, this.imagePozList[i].sy,
-									this.imagePozList[i].pozX, this.imagePozList[i].pozY,
-									this.buildImageSize, this.buildImageSize);
-			Engine.getCanvasContext().font = "10px Arial";
-			Engine.getCanvasContext().fillText(this.priceList[i].value,
-								   this.priceList[i].pozX,
-								   this.priceList[i].pozY);
-                }
+			for (let i = 0; i < 4; i++ ) {
+				Engine.getCanvasContext().drawImage(this.imagePozList[i].image,
+										0, 0,
+										this.imagePozList[i].sx, this.imagePozList[i].sy,
+										this.imagePozList[i].pozX, this.imagePozList[i].pozY,
+										this.buildImageSize, this.buildImageSize);
+				Engine.getCanvasContext().font = "10px Arial";
+				Engine.getCanvasContext().fillText(this.priceList[i].value,
+									   this.priceList[i].pozX,
+									   this.priceList[i].pozY);
+			}
 		}
 	}
 
@@ -148,11 +116,11 @@ export class PlaceTrap {
   updateTrapImagesPozition() {
   	this.buildImageSize = this.sizeX / 100 * 15;
   	//______________________________________________________________
-  	var ox = this.sizeX / 100; // 1% of the x size of the trap menu
-  	var oy = this.sizeY / 100; // 1% of the y size of the trap menu
+  	const ox = this.sizeX / 100; // 1% of the x size of the trap menu
+  	const oy = this.sizeY / 100; // 1% of the y size of the trap menu
 
-  	var sx = this.startX; //the x start point of the calculation
-  	var sy = this.startY; //the y start point of the calculation
+	const sx = this.px; //the x start point of the calculation
+	const sy = this.py; //the y start point of the calculation
 
   	// Fire trap poz
   	this.imagePozList[0].pozX = sx + ox * 11;
@@ -191,11 +159,10 @@ export class PlaceTrap {
   }
 
   updateCollisionBoxPozition() {
-		var ox = this.sizeX / 100; // 1% of the x size of the build Menu
-		var oy = this.sizeY / 100; // 1% of the y size of the build Menu
-
-		var sx = this.startX; //the x start point of the calculation
-		var sy = this.startY; //the y start point of the calculation
+		const ox = this.sizeX / 100; // 1% of the x size of the build Menu
+		const oy = this.sizeY / 100; // 1% of the y size of the build Menu
+		const sx = this.px;
+		const sy = this.py;
 
 		this.buildCollisionBox = [
 			{x: sx + ox * 11,
@@ -220,20 +187,13 @@ export class PlaceTrap {
 		];
 	}
 
-	updatePriceList() {
-		for(let i = 0; i < 4; i++) {
+	updatePriceList(): void {
+		for (let i = 0; i < 4; i++) {
 			this.priceList[i].value = trapTypes[this.imagePozList[i].type]["price"];
 		}
 	}
-
-	/**
-	 * @description Check if we clicked on a building place.Place a new tower (must be in building mode).
-	 * @param {*} mousePoz mouse position
-	 * @param {*} fps number of frames per second
-	 */
-	buildChosenTrap(index: number, mousePoz: any, fps : number) {
-
-		if(Engine.getMoney() >= this.priceList[index].value) {
+	buildChosenTrap(index: number, mousePoz: MousePosition, fps : number) {
+		if (Engine.getMoney() >= this.priceList[index].value) {
 			Engine.decreaseMoney(this.priceList[index].value);
 			Engine.getGameState().reset();
 

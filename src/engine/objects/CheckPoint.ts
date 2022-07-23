@@ -1,13 +1,4 @@
-/**
- * @description Tower CheckPoints
- * @param {*} px position on Ox
- * @param {*} py position on Oy
- * @param {*} size size
- * @param {*} direction direction of checkpoint when activated
- * @param {*} final ?? why is this here?
- */
 import {Engine} from "../Engine.";
-
 
 export class CheckPoint {
 	x: number;
@@ -26,7 +17,7 @@ export class CheckPoint {
 		this.id = id;
 	}
 
-	render(index: number) {
+	render(index: number): void {
 		Engine.getCanvasContext().fillStyle = 'red';
 		Engine.getCanvasContext().fillRect(this.x, this.y, this.size, this.size);
 		Engine.getCanvasContext().fillStyle = 'black';

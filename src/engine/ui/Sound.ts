@@ -37,21 +37,18 @@ export class Sound {
 
         //on state
         this.on = true;
-
     }
 
-    //turn sound on or off
-   clickSound() {
+    clickSound(): void {
         this.on = !this.on;
-   }
+    }
 
-    //rendering function
     render() {
-        if(this.on) {
+        if (this.on) {
             Engine.getCanvasContext().drawImage(this.onImage,
                                     0,0, this.sw, this.sh,
                                     this.pozX, this.pozY, this.sizeX, this.sizeY);
-        }else {
+        } else {
             Engine.getCanvasContext().drawImage(this.offImage,
                                     0,0, this.sw, this.sh,
                                     this.pozX, this.pozY, this.sizeX, this.sizeY);

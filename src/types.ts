@@ -47,3 +47,81 @@ export type ENEMY_CONFIG = {
         dieSound: string,
     }
 }
+
+export type RoadAttribute = {
+    x: number;
+    y: number;
+    sizeX: number;
+    sizeY: number;
+}
+
+export type MousePosition = {
+    x: number,
+    y: number,
+}
+
+export interface ImageMetaData {
+    pozX: number,
+    pozY: number,
+    sx: number,
+    sy: number,
+    image: any
+}
+
+export interface BuildTowerMetaData extends ImageMetaData {
+    type: TOWER_TYPE;
+}
+
+export type UpgradeMetaData = {
+    type: UPGRADE_TYPE,
+    price: number,
+    cost: number,
+    value: number,
+    lvl: number,
+    maxLvl:number;
+}
+
+export enum UPGRADE_TYPE {
+    RANGE = 'RANGE',
+    FIRE_RATE = 'FIRE_RATE',
+    DAMAGE = 'DAMAGE',
+    EFFECT = 'EFFECT',
+}
+
+export enum TOWER_TYPE {
+    FIRE = 'FIRE',
+    FROST = 'FROST',
+    CANNON = 'CANNON',
+    BOULDER = 'BOULDER',
+}
+
+export type TowerConfig = {
+    [key in TOWER_TYPE]: {
+        hp: number,
+        cost: number,
+        range: number,
+        bulletType: BULLET_TYPE,
+        'fire-rate': number,
+        'image-width': number,
+        'image-height': number,
+        'sprite-width': number,
+        'sprite-height': number,
+    }
+};
+
+export enum BULLET_TYPE {
+    FIRE = 'FIRE',
+    FROST = 'FROST',
+    CANNON = 'CANNON',
+    BOULDER = 'BOULDER',
+    POISON = 'POISON'
+}
+
+export type BulletConfig = {
+    [key in BULLET_TYPE]: {
+        'bullet-speed': number,
+        damage: number,
+        effect: string,
+        'time-effect': number,
+    }
+}

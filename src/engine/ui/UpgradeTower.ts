@@ -1,5 +1,7 @@
 import {Engine} from "../Engine.";
 import {FOLDER_PATHS} from "../../imageTypes";
+import {ImageMetaData} from "../../types";
+import {Tower} from "../objects/Tower";
 
 export class UpgradeTower {
 	upMenuImage: any;
@@ -17,8 +19,8 @@ export class UpgradeTower {
 	startX: number;
 	startY: number;
 
-	upgradeImageSize: any;
-	imagePozList: any;
+	upgradeImageSize: number;
+	imagePozList: ImageMetaData[];
 	priceList: any;
 	upgradeCollisionBox: any[];
 	indexTowerUpgraded: number;
@@ -65,15 +67,7 @@ export class UpgradeTower {
 		this.noGold.play();
 	}
 
-	//Sets the position of the upgrade menu and upgrade images.
 	init () {
-		this.imagePozList = [
-			{pozX: 0, pozY: 0, sx: 230, sy :229, image: null},
-			{pozX: 0, pozY: 0, sx: 128, sy :128, image: null},
-			{pozX: 0, pozY: 0, sx: 128, sy: 128, image: null},
-			{pozX: 0, pozY: 0, sx: 250, sy :279, image: null}
-		];
-
 		this.priceList = [
 			{pozX: 0, pozY: 0, value: 25},
 			{pozX: 0, pozY: 0, value: 45},
@@ -86,19 +80,21 @@ export class UpgradeTower {
 		const dmg = Engine.getImageMap()[FOLDER_PATHS.UPGRADES].dmg;
 		const effect = Engine.getImageMap()[FOLDER_PATHS.UPGRADES].effect;
 
-		this.imagePozList[0].image = range;
-		this.imagePozList[1].image = firerate;
-		this.imagePozList[2].image = dmg;
-		this.imagePozList[3].image = effect;
+		this.imagePozList = [
+			{pozX: 0, pozY: 0, sx: 230, sy :229, image: range},
+			{pozX: 0, pozY: 0, sx: 128, sy :128, image: firerate},
+			{pozX: 0, pozY: 0, sx: 128, sy: 128, image: dmg},
+			{pozX: 0, pozY: 0, sx: 250, sy :279, image: effect}
+		];
 	}
 
-	updatePozition(tower: any, index: number) {
+	updatePozition(tower: Tower, index: number) {
 		this.indexTowerUpgraded = index;
 		const x = (this.sizeX - tower.sizeX) / 2;
 		const y = (this.sizeY - tower.sizeY) / 2;
 
-		this.startX = tower.pozX - x;
-		this.startY = tower.pozY - y;
+		this.startX = tower.px - x;
+		this.startY = tower.py - y;
 
 		this.updateUpgradeImagesPozition();
 		this.updateCollisionBoxPozition();
@@ -110,8 +106,7 @@ export class UpgradeTower {
 								0, 0, this.sw, this.sh,
 								this.startX, this.startY, this.sizeX, this.sizeY);
 
-		//draw the images for the upgrades
-		for(let i = 0; i < 4; i++ ) {
+		for (let i = 0; i < 4; i++ ) {
 			Engine.getCanvasContext().drawImage(this.imagePozList[i].image,
 									0, 0,
 									this.imagePozList[i].sx, this.imagePozList[i].sy,
@@ -131,10 +126,9 @@ export class UpgradeTower {
 		const ox = this.sizeX / 100; // 1% of the x size of the upgrade Menu
 		const oy = this.sizeY / 100; // 1% of the y size of the upgrade Menu
 
-		const sx = this.startX; //the x start point of the calculation
-		const sy = this.startY; //the y start point of the calculation
+		const sx = this.startX;
+		const sy = this.startY;
 
-		//range poz
 		this.imagePozList[0].pozX = sx + ox * 11;
 		this.imagePozList[0].pozY = sy + oy * 8;
 
@@ -151,7 +145,6 @@ export class UpgradeTower {
 		this.imagePozList[3].pozY = sy + oy  * 67;
 		//_________________________________________|
 
-		//__________________________________________
 		//range price poz
 		this.priceList[0].pozX = sx + ox  * 13;
 		this.priceList[0].pozY = sy + oy * 36;
@@ -167,15 +160,14 @@ export class UpgradeTower {
 		//effect poz
 		this.priceList[3].pozX = sx + ox  * 73;
 		this.priceList[3].pozY = sy + oy * 95;
-		//______________________________________|
 	}
 
 	updateCollisionBoxPozition() {
 		const ox = this.sizeX / 100; // 1% of the x size of the upgrade Menu
 		const oy = this.sizeY / 100; // 1% of the y size of the upgrade Menu
 
-		const sx = this.startX; //the x start point of the calculation
-		const sy = this.startY; //the y start point of the calculation
+		const sx = this.startX;
+		const sy = this.startY;
 
 		this.upgradeCollisionBox = [
 			{x: sx + ox * 11,
@@ -202,13 +194,13 @@ export class UpgradeTower {
 
 	updatePriceList (index: number) {
 		const tower = Engine.getTowerList()[index];
-		for(let i = 0; i < 4; i++) {
+		for (let i = 0; i < 4; i++) {
 			this.priceList[i].value = tower.upgradeTypes[i].price;
 		}
 	}
 
-	applyUpgrade(index: number) {
-		if(this.priceList[index].value <= Engine.getMoney()) {
+	applyUpgrade(index: number): void {
+		if (this.priceList[index].value <= Engine.getMoney()) {
 			Engine.decreaseMoney(this.priceList[index].value);
 			switch(index) {
 				case 0:
@@ -227,7 +219,7 @@ export class UpgradeTower {
 					Engine.getTowerList()[this.indexTowerUpgraded].upgradeEffect();
 					break;
 			}
-		}else {
+		} else {
 			this.applySoundLogic();
 		}
 	}

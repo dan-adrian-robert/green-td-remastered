@@ -62,6 +62,7 @@ export const IMAGE_MAP: GAME_ASSET_FORMAT = {
         boulderTower: require('./images/towers/boulder_tower.png'),
         cannonTower: require('./images/towers/cannon_tower.png'),
         frostTower: require('./images/towers/frost_tower.png'),
+        fireTower: require('./images/towers/magma_tower.png'),
         tower: require('./images/towers/tower.png'),
         towersV1: require('./images/towers/towers_v1.png'),
     },
@@ -145,6 +146,9 @@ export const buildImageMap= () : GAME_ASSET_FORMAT => {
     const frostTower = new Image(tx, ty);
     frostTower.src = IMAGE_MAP.TOWERS.frostTower;
 
+    const fireTower = new Image(tx, ty);
+    fireTower.src = IMAGE_MAP.TOWERS.fireTower;
+
     const tower = new Image(tx, ty);
     tower.src = IMAGE_MAP.TOWERS.tower;
 
@@ -195,9 +199,14 @@ export const buildImageMap= () : GAME_ASSET_FORMAT => {
     const shockBall = new Image(bx,by);
     shockBall.src = IMAGE_MAP.BULLETS.shockBall;
 
+    const allyX = 375;
+    const allyY = 300;
+    const kamikaze = new Image(allyX, allyY);
+    kamikaze.src = IMAGE_MAP.ALLY.kamikaze;
+
     const result: GAME_ASSET_FORMAT = {
         [FOLDER_PATHS.ALLY]: {
-            kamikaze: {},
+            kamikaze,
             kamikazeMenuIcon: {}
         },
         [FOLDER_PATHS.BUILDINGS]: {
@@ -244,6 +253,7 @@ export const buildImageMap= () : GAME_ASSET_FORMAT => {
             boulderTower,
             cannonTower,
             frostTower,
+            fireTower,
             tower,
             towersV1,
         },

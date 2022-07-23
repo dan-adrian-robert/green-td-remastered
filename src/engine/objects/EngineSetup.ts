@@ -22,7 +22,7 @@ import {Coin} from "./Coin";
 import {Enemy} from "./Enemy";
 import {Tower} from "./Tower";
 import {Bullet} from "./Bullet";
-import {Direction, MOB_TYPE} from "../../types";
+import {Direction, MOB_TYPE, TOWER_TYPE} from "../../types";
 
 export const setupGame = () => {
     const imageMap = buildImageMap();
@@ -65,7 +65,7 @@ export const setupGame = () => {
     const enemyObject = new Enemy(35, 35, Direction.right,5, MOB_TYPE.footman, 1, 1);
     Engine.setEnemySystem(enemyObject);
 
-    const towerObject = new Tower('cannon-tower', 5, 0, 0, 45, 55, 50);
+    const towerObject = new Tower(TOWER_TYPE.CANNON, 5, 0, 0, 45, 55, 50);
     Engine.setTowerSystem(towerObject);
 
     const bulletObject = new Bullet('images/bullets/fire.png', 450, 550, 5, 90, 110, 0, 0, 45, "burn", 1, 50, null, FPS);
@@ -92,36 +92,35 @@ export const initEntities = () => {
 
     //Init the building box
     const bpImage = Engine.getImageMap()[FOLDER_PATHS.UI].bp;
+    const bpSize = 45;
 
-    listBox.push(new BuildingPlace( bpImage,  200, 180, 45));
-    listBox.push(new BuildingPlace(bpImage, 305, 180, 45));
-    listBox.push(new BuildingPlace(bpImage, 305, 135, 45));
-    listBox.push(new BuildingPlace(bpImage, 430, 180, 45));
-    listBox.push(new BuildingPlace(bpImage, 430, 135, 45));
+    listBox.push(new BuildingPlace( bpImage,  200, 180, bpSize));
+    listBox.push(new BuildingPlace(bpImage, 305, 180, bpSize));
+    listBox.push(new BuildingPlace(bpImage, 305, 135, bpSize));
+    listBox.push(new BuildingPlace(bpImage, 430, 180, bpSize));
+    listBox.push(new BuildingPlace(bpImage, 430, 135, bpSize));
 
-    listBox.push(new BuildingPlace(bpImage, 430, 235, 45));
-    listBox.push(new BuildingPlace(bpImage, 290, 270, 45));
-    listBox.push(new BuildingPlace(bpImage, 335, 270, 45));
-    listBox.push(new BuildingPlace(bpImage, 385, 270, 45));
+    listBox.push(new BuildingPlace(bpImage, 430, 235, bpSize));
+    listBox.push(new BuildingPlace(bpImage, 290, 270, bpSize));
+    listBox.push(new BuildingPlace(bpImage, 335, 270, bpSize));
+    listBox.push(new BuildingPlace(bpImage, 385, 270, bpSize));
 
     //building places on the islands
-    listBox.push(new BuildingPlace(bpImage, 625, 405, 45));
-    listBox.push(new BuildingPlace(bpImage, 250, 405, 45));
-    listBox.push(new BuildingPlace(bpImage, 205, 405, 45));
-    listBox.push(new BuildingPlace(bpImage, 50,  370, 45));
+    listBox.push(new BuildingPlace(bpImage, 625, 405, bpSize));
+    listBox.push(new BuildingPlace(bpImage, 250, 405, bpSize));
+    listBox.push(new BuildingPlace(bpImage, 205, 405, bpSize));
+    listBox.push(new BuildingPlace(bpImage, 50,  370, bpSize));
 
     //bottom building places
-    listBox.push(new BuildingPlace(bpImage, 380,  365, 45));
-    listBox.push(new BuildingPlace(bpImage, 120,  275, 45));
-    listBox.push(new BuildingPlace(bpImage, 570,  300, 45));
-    listBox.push(new BuildingPlace(bpImage, 570,  250, 45));
+    listBox.push(new BuildingPlace(bpImage, 380,  365, bpSize));
+    listBox.push(new BuildingPlace(bpImage, 120,  275, bpSize));
+    listBox.push(new BuildingPlace(bpImage, 570,  300, bpSize));
+    listBox.push(new BuildingPlace(bpImage, 570,  250, bpSize));
 
     Engine.setBoxList(listBox);
 
     Engine.setUpgradeTower(new UpgradeTower(Engine.getImageMap()[FOLDER_PATHS.UI].upgradeMenu, 131, 129, 130, 130));
-
     Engine.setBuildSystem(new BuildSystem(Engine.getImageMap()[FOLDER_PATHS.UI].upgradeMenu, 131, 129, 130, 130));
-
     Engine.setPlaceTrap(new PlaceTrap(Engine.getImageMap()[FOLDER_PATHS.UI].upgradeMenu, 131, 129, 130, 130));
 }
 

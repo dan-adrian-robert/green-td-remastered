@@ -1,20 +1,9 @@
-/**
- * @description Enemy constructor
- * @param {*} startX x position
- * @param {*} startY y position
- * @param {*} direction enemy direction
- * @param {*} indexCP the index of the current checkpoint
- * @param {*} type type of enemy
- * @param {*} hpMultiplier hp multiplier
- * @param {*} dmgMultiplier dmg multiplier
- */
 import {Hp} from "./Hp";
 import {Direction, ENEMY_CONFIG, MOB_TYPE} from "../../types";
 import {Engine} from "../Engine.";
+import {Sprite} from "./Sprite";
 
-export class Enemy {
-	pozX: number;
-	pozY: number;
+export class Enemy extends Sprite {
 	debuffs: any[];
 	healLeft: any;
 	enemyType: MOB_TYPE;
@@ -22,24 +11,11 @@ export class Enemy {
 	dir: Direction;
 	speed: any;
 	hp: any;
-	image_height: number;
-	image_width: number;
-	image: any;
-
-	sw: any;
-	sh: any;
-	sizeX: any;
-	sizeY: any;
-
-	indX: number;
-	indY: number;
-
 	currentCp: any;
 	animationIndex: number;
 	ticks: number;
 	maxTicks: number;
 
-	//the bounty given when the enemy dies
 	bounty: any
 	dmg: any
 
@@ -47,28 +23,27 @@ export class Enemy {
 	healCD: any;
 
 	constructor(startX:number, startY:number, direction: Direction, indexCp: any, type: MOB_TYPE, hpMultiplier:number, dmgMultiplier:number) {
-		this.pozX = startX;
-		this.pozY = startY;
+		const image = {}
+		super(image,0,0, enemyTypes[type].spriteWidth, enemyTypes[type].spriteHeight,
+			startX, startY,  enemyTypes[type].sizeX,  enemyTypes[type].sizeY);
 
 		this.debuffs = [];
-
 		this.healLeft = 2;
-
 		this.enemyType = type;
 
 		this.active_debuffs = {
 			none: 0,
 			slow: {
 				"duration": 0,  // for ice
-				"value": 0
+				value: 0
 			},
 			burn: {
 				"duration": 0, // for fire
-				"damage": 0
+				damage: 0
 			},
 			stun: {
 				"duration": 0, // for boulder
-				"value": 0
+				value: 0
 			},
 			poison: {
 				"duration": 0, // for poison (deals dmg and slow)
@@ -80,107 +55,88 @@ export class Enemy {
 
 		this.dir = direction;
 		this.speed = enemyTypes[this.enemyType]['speed'];
-		this.hp = new Hp(this.pozX, this.pozY - 10, 20, 5, enemyTypes[this.enemyType]['hp'] * hpMultiplier);
-
-		this.image_height = enemyTypes[this.enemyType]['image_height'];
-		this.image_width = enemyTypes[this.enemyType]['image_width'];
+		this.hp = new Hp(this.px, this.py - 10, 20, 5, enemyTypes[this.enemyType]['hp'] * hpMultiplier);
 
 		switch (this.enemyType) {
 			case MOB_TYPE.footman:
 				this.image = Engine.getImageMap().MOBS.footman;
 				break
 		}
-
-		//sizes for a single sprite
-		this.sw = `${enemyTypes[this.enemyType].spriteWidth}`;
-		this.sh = enemyTypes[this.enemyType]['spriteHeight'];
-
-		//enemy size
-		this.sizeX = enemyTypes[this.enemyType].sizeX;
-		this.sizeY = enemyTypes[this.enemyType]['sizeY'];
-
-		//sprite position inside the image
-		this.indX = 1;
-		this.indY = 0;
-
-		//last checkpoint
 		this.currentCp = indexCp;
 
-		//the animation index
 		this.animationIndex = 0;
 		this.ticks = 0;
 		this.maxTicks = 5;
 
-		//the bounty given when the enemy dies
 		this.bounty = getEnemyBounty(this.enemyType);
 		this.dmg = getEnemyDamange(this.enemyType) * dmgMultiplier;
 
 		this.dieSound = new Audio();
 		this.dieSound.volume = 0.1;
 		this.dieSound.src = enemyTypes[this.enemyType].dieSound;
-
-		//Apply this function in the beghining
-		// this.changeSpriteDir(this.dir);
 	}
 
-	//updates the current position of the enemy
 	move() {
 		this.ticks += 1;
-		const slow_total = this.active_debuffs.slow["value"]   // calculate slow from different sources (doesn't stack from same source)
-						+ this.active_debuffs.stun["value"]
-						+ this.active_debuffs.poison["slow_value"];
+		const slow_total = this.active_debuffs.slow["value"] + this.active_debuffs.stun["value"] + this.active_debuffs.poison["slow_value"];
 
-		if(this.dir === Direction.right) {
-			this.pozX += Math.max(this.speed - slow_total, 0);
-		} else if(this.dir === Direction.left) {
-			this.pozX -= Math.max(this.speed - slow_total, 0);
-		} else if(this.dir === Direction.up) {
-			this.pozY -= Math.max(this.speed - slow_total, 0);
-		} else if(this.dir === Direction.down) {
-			this.pozY += Math.max(this.speed - slow_total, 0);
+		switch (this.dir) {
+			case Direction.right:
+				this.px += Math.max(this.speed - slow_total, 0);
+				break;
+
+			case Direction.left:
+				this.px -= Math.max(this.speed - slow_total, 0);
+				break;
+
+			case Direction.up:
+				this.py -= Math.max(this.speed - slow_total, 0);
+				break;
+
+			case Direction.down:
+				this.py += Math.max(this.speed - slow_total, 0);
+				break;
 		}
 	}
 
 	render () {
-		Engine.getCanvasContext().drawImage(this.image,
-								this.indX, this.indY, this.sw, this.sh,
-								this.pozX, this.pozY, this.sizeX, this.sizeY);
+		Engine.getCanvasContext().drawImage(this.image, this.spx, this.spy, this.spSizeX, this.spSizeY,
+												this.px, this.py, this.sizeX, this.sizeY);
 	}
 
 	//collide with the checkpoints and change the direction if needed
 	colideWithCheckPoint(map: any) {
 		const cp = map.getCp(this.currentCp);
 
-		if(Math.abs(this.pozX - cp.x) < this.sizeX &&
-		   Math.abs(this.pozY - cp.y) < this.sizeY ) {
+		if(Math.abs(this.px - cp.x) < this.sizeX &&
+		   Math.abs(this.py - cp.y) < this.sizeY ) {
 			this.dir = cp.dir;
 			this.currentCp += 1;
 			this.changeSpriteDir(this.dir);
 		}
 	}
 
-	//Change the enemy facing position
 	changeSpriteDir(dir: Direction) {
 		if (dir === Direction.right) {
-			this.indY = 3 * this.sh;
-			this.indX = 0;
+			this.spy = 3 * this.spSizeY;
+			this.spx = 0;
 		}else if(dir === Direction.left) {
-			this.indY = 1 * this.sh;
-			this.indX = 0;
+			this.spy = 1 * this.spSizeY;
+			this.spx = 0;
 		} else if(dir === Direction.down) {
-			this.indY = 0;
-			this.indX = 0;
+			this.spy = 0;
+			this.spx = 0;
 		}else if(dir === Direction.up) {
-			this.indY = 2 * this.sh;
-			this.indX = 0;
+			this.spy = 2 * this.spSizeY;
+			this.spx = 0;
 		}
 	}
 
 	updateSprite() {
 		if(this.ticks > this.maxTicks) {
 			this.ticks = 0;
-			this.indX += this.sw;
-			this.indX %= this.image.width;
+			this.spx += this.spSizeX;
+			this.spx %= this.image.width;
 
 			// console.log('end', this.indX);
 			// if(this.active_debuffs.stun["duration"] > 0) {
@@ -193,16 +149,16 @@ export class Enemy {
 	}
 
 	//render the collision range for the enemy
-	renderRange() {
-		const X = this.pozX + this.sizeX / 2
-		const Y = this.pozY + this.sizeY / 2;
+	renderRange(): void {
+		const X = this.px + this.sizeX / 2
+		const Y = this.py + this.sizeY / 2;
 
 		Engine.getCanvasContext().beginPath();
 		Engine.getCanvasContext().arc(X, Y, this.sizeX / 2, 0, 2 * Math.PI, false);
 		Engine.getCanvasContext().stroke();
 	}
 
-	applyDebuffs() {
+	applyDebuffs(): void {
 		this.debuffs.forEach((debuff: any) => {
 			// extract variables from current debuff
 			const effect = debuff["effect"];
@@ -210,11 +166,11 @@ export class Enemy {
 			const damage = debuff["dmg"];
 
 			//treat depending on case (here you can change the multiplier for a specific debuff)
-			if(effect === "none") {
+			if (effect === "none") {
 					this.active_debuffs.burn["duration"] = duration;
 					this.active_debuffs.burn["damage"] = damage;
 			}
-			else if(effect === "burn") {
+			else if (effect === "burn") {
 				this.active_debuffs.burn["duration"] = duration;
 				this.active_debuffs.burn["damage"] = Math.floor(damage * 0.3)
 			}
@@ -238,13 +194,13 @@ export class Enemy {
 		this.debuffs = [];
 	}
 
-	tick_debuffs() {
+	tick_debuffs(): void {
 		const current_tick = performance.now() / 1000;
-		var last_tick = this.active_debuffs.last_tick;
+		const last_tick = this.active_debuffs.last_tick;
 
 
 		// if it's at least 1 second
-		if(current_tick - last_tick > 1){
+		if (current_tick - last_tick > 1){
 			this.healCD -= 1;
 			// reduce duration
 			this.active_debuffs.burn["duration"] = Math.max(this.active_debuffs.burn["duration"] - 1, 0);
@@ -252,15 +208,12 @@ export class Enemy {
 			this.active_debuffs.slow["duration"] = Math.max(this.active_debuffs.slow["duration"] - 1, 0);
 			this.active_debuffs.poison["duration"] = Math.max(this.active_debuffs.poison["duration"] - 1, 0);
 
-			// reduce health
-			var total_damage_per_tick = this.active_debuffs.burn["damage"] + this.active_debuffs.poison["dmg_value"];
+			const total_damage_per_tick = this.active_debuffs.burn["damage"] + this.active_debuffs.poison["dmg_value"];
 			this.hp.value = this.hp.value - total_damage_per_tick;
 
-			// update current tick
 			this.active_debuffs.last_tick = current_tick;
 		}
 
-		// revert the values back if the duration finishes
 		if(this.active_debuffs.burn["duration"] === 0){
 			this.active_debuffs.burn["damage"] = 0;
 		}
@@ -274,7 +227,6 @@ export class Enemy {
 			this.active_debuffs.slow["slow_value"] = 0;
 			this.active_debuffs.slow["dmg_value"] = 0;
 		}
-
 	}
 
 	castHeal(list: any, currentEnemy: any) {
@@ -287,14 +239,14 @@ export class Enemy {
 		const chance = 30
 		const tryChance = randomIntFromInterval(0,100);
 
-		if(tryChance <= chance) {
+		if (tryChance <= chance) {
 			const listDamagedEnemies: any = [];
 			list.forEach(function(enemy: any) {
 				if(enemy.hp.value < getEnemyHp(enemy.enemyType))
 					listDamagedEnemies.push(enemy);
 			}, this);
 			
-			if(listDamagedEnemies.length > 0 ) {
+			if (listDamagedEnemies.length > 0 ) {
 				const randomEnemyIndex = randomIntFromInterval(0, listDamagedEnemies.length - 1);
 				const randomEnemy = listDamagedEnemies[randomEnemyIndex];
 				randomEnemy.hp.value += 15; 
@@ -302,13 +254,13 @@ export class Enemy {
 		}
 	};
 
-	applySoundLogic() {
-			if(Engine.getSound().on) {
-				this.dieSound.volume = 0.1;
-			}else {
-				this.dieSound.volume = 0;
-			}
-			this.dieSound.play();
+	applySoundLogic(): void {
+		if (Engine.getSound().on) {
+			this.dieSound.volume = 0.1;
+		}else {
+			this.dieSound.volume = 0;
+		}
+		this.dieSound.play();
 	}
 }
 

@@ -1,6 +1,9 @@
-import {Tower, towerTypes} from "../objects/Tower";
+import {Tower} from "../objects/Tower";
 import {Engine} from "../Engine.";
 import {FOLDER_PATHS} from "../../imageTypes";
+import {BuildingPlace} from "../objects/BuildingPlace";
+import {BuildTowerMetaData, MousePosition, TOWER_TYPE} from "../../types";
+import {towerTypes} from "../../config/towerConfig";
 
 export class BuildSystem {
 	buildMenuImage: any;
@@ -17,13 +20,13 @@ export class BuildSystem {
 	startY: number;
 
 	buildImageSize: number;
-	imagePozList: any[];
-	priceList: any[];
-	buildCollisionBox: any[];
+	imagePozList: BuildTowerMetaData[];
+	priceList: {pozX: number, pozY: number, value: number}[];
+	buildCollisionBox: {x: number, y: number, size: number}[];
 
 	indexTowerBuilded: number;
 	noGold: any;
-	indexBuildingPlace: any;
+	indexBuildingPlace: number;
 
 	constructor (image: any, sw: number, sh: number, sizeX:number, sizeY: number) {
 		// Build Menu Image
@@ -57,17 +60,11 @@ export class BuildSystem {
 		this.noGold = new Audio();
 		this.noGold.volume = 0.3;
 		this.noGold.src = 'sound/ui/humanNoGold.wav';
+		this.indexBuildingPlace = 0;
 		this.init();
 	}
 
-	init() {
-		this.imagePozList = [
-			{pozX: 0, pozY: 0, sx: 90, sy : 110, type: null, image: null},
-			{pozX: 0, pozY: 0, sx: 90, sy : 110, type: null, image: null},
-			{pozX: 0, pozY: 0, sx: 90, sy : 110, type: null, image: null},
-			{pozX: 0, pozY: 0, sx: 90, sy : 110, type: null, image: null}
-		];
-
+	init(): void {
 		this.priceList = [
 			{pozX: 0, pozY: 0, value: 0},
 			{pozX: 0, pozY: 0, value: 0},
@@ -75,27 +72,32 @@ export class BuildSystem {
 			{pozX: 0, pozY: 0, value: 0}
 		];
 
-		const magmaTower = Engine.getImageMap()[FOLDER_PATHS.TOWERS].towersV1;
+		const magmaTower = Engine.getImageMap()[FOLDER_PATHS.TOWERS].fireTower;
 		const frostTower = Engine.getImageMap()[FOLDER_PATHS.TOWERS].frostTower;
 		const cannonTower =  Engine.getImageMap()[FOLDER_PATHS.TOWERS].cannonTower;
 		const boulderTower =  Engine.getImageMap()[FOLDER_PATHS.TOWERS].boulderTower;
 
-		console.log(magmaTower);
+		// this.imagePozList[0].image = magmaTower;
+		// this.imagePozList[1].image = frostTower;
+		// this.imagePozList[2].image = cannonTower;
+		// this.imagePozList[3].image = boulderTower;
+		// this.imagePozList[0].type = TOWER_TYPE.FIRE;
+		// this.imagePozList[1].type = TOWER_TYPE.FROST;
+		// this.imagePozList[2].type = TOWER_TYPE.CANNON;
+		// this.imagePozList[3].type = TOWER_TYPE.BOULDER;
 
-		this.imagePozList[0].image = magmaTower;
-		this.imagePozList[1].image = frostTower;
-		this.imagePozList[2].image = cannonTower;
-		this.imagePozList[3].image = boulderTower;
-		this.imagePozList[0].type = "magma-tower";
-		this.imagePozList[1].type = "frost-tower";
-		this.imagePozList[2].type = "cannon-tower";
-		this.imagePozList[3].type = "boulder-tower";
+		this.imagePozList = [
+			{pozX: 0, pozY: 0, sx: 90, sy : 110, type: TOWER_TYPE.FIRE, image: magmaTower},
+			{pozX: 0, pozY: 0, sx: 90, sy : 110, type: TOWER_TYPE.FROST, image: frostTower},
+			{pozX: 0, pozY: 0, sx: 90, sy : 110, type: TOWER_TYPE.CANNON, image: cannonTower},
+			{pozX: 0, pozY: 0, sx: 90, sy : 110, type: TOWER_TYPE.BOULDER, image: boulderTower}
+		];
 	}
 
-	updatePozition(buildingPlace: any, index: number) {
+	updatePozition(buildingPlace: BuildingPlace, index: number): void {
 		this.indexBuildingPlace = index;
-		this.startX = buildingPlace.pozX - this.sw / 3.2;
-		this.startY = buildingPlace.pozY - this.sh / 3.5;
+		this.startX = buildingPlace.px - this.sw / 3.2;
+		this.startY = buildingPlace.py - this.sh / 3.5;
 
 		// Update the towers images position
 		this.updateBuildImagesPozition();
@@ -103,9 +105,7 @@ export class BuildSystem {
 		this.updatePriceList();
 	}
 
-	// Render function for the Build Menu.
-	// Render the menu image and also the tower images.
-	render(condition: boolean) {
+	render(condition: boolean): void {
 		if (condition) {
 			Engine.getCanvasContext().drawImage(this.buildMenuImage,
 									0, 0, this.sw, this.sh,
@@ -126,59 +126,50 @@ export class BuildSystem {
 		}
 	}
 
+	updateBuildImagesPozition(): void {
+		this.buildImageSize = this.sizeX / 100 * 15;
+		const ox = this.sizeX / 100; // 1% of the x size of the build Menu
+		const oy = this.sizeY / 100; // 1% of the y size of the build Menu
 
-  // Update the tower images position based on the build menu position
-  updateBuildImagesPozition() {
-  	this.buildImageSize = this.sizeX / 100 * 15;
-  	//______________________________________________________________
-  	var ox = this.sizeX / 100; // 1% of the x size of the build Menu
-  	var oy = this.sizeY / 100; // 1% of the y size of the build Menu
+		const sx = this.startX;
+		const sy = this.startY;
 
-  	var sx = this.startX; //the x start point of the calculation
-  	var sy = this.startY; //the y start point of the calculation
+		this.imagePozList[0].pozX = sx + ox * 11;
+		this.imagePozList[0].pozY = sy + oy * 8;
 
-  	// Magma tower poz
-  	this.imagePozList[0].pozX = sx + ox * 11;
-  	this.imagePozList[0].pozY = sy + oy * 8;
+		this.imagePozList[1].pozX = sx + ox * 73;
+		this.imagePozList[1].pozY = sy + oy * 9;
 
-  	// Frost tower poz
-  	this.imagePozList[1].pozX = sx + ox * 73;
-  	this.imagePozList[1].pozY = sy + oy * 9;
+		this.imagePozList[2].pozX = sx + ox * 12;
+		this.imagePozList[2].pozY = sy + oy * 67;
 
-  	// Cannon tower poz
-  	this.imagePozList[2].pozX = sx + ox * 12;
-  	this.imagePozList[2].pozY = sy + oy * 67;
+		this.imagePozList[3].pozX = sx + ox  * 73;
+		this.imagePozList[3].pozY = sy + oy  * 67;
 
-  	// boulder tower poz
-  	this.imagePozList[3].pozX = sx + ox  * 73;
-  	this.imagePozList[3].pozY = sy + oy  * 67;
-  	//_________________________________________|
+		// Magma tower price poz
+		this.priceList[0].pozX = sx + ox  * 13;
+		this.priceList[0].pozY = sy + oy * 36;
 
-  	//__________________________________________
-  	// Magma tower price poz
-  	this.priceList[0].pozX = sx + ox  * 13;
-  	this.priceList[0].pozY = sy + oy * 36;
+		// Frost tower price poz
+		this.priceList[1].pozX = sx + ox  * 73;
+		this.priceList[1].pozY = sy + oy  * 36;
 
-  	// Frost tower price poz
-  	this.priceList[1].pozX = sx + ox  * 73;
-  	this.priceList[1].pozY = sy + oy  * 36;
+		// Cannon tower price poz
+		this.priceList[2].pozX = sx + ox  * 12;
+		this.priceList[2].pozY = sy + oy  * 95;
 
-  	// Cannon tower price poz
-  	this.priceList[2].pozX = sx + ox  * 12;
-  	this.priceList[2].pozY = sy + oy  * 95;
+		// boulder tower price poz
+		this.priceList[3].pozX = sx + ox  * 73;
+		this.priceList[3].pozY = sy + oy * 95;
+		//______________________________________|
+	}
 
-  	// boulder tower price poz
-  	this.priceList[3].pozX = sx + ox  * 73;
-  	this.priceList[3].pozY = sy + oy * 95;
-  	//______________________________________|
-  }//updateTowerImagesPozition
+	updateCollisionBoxPozition(): void {
+		const ox = this.sizeX / 100; // 1% of the x size of the build Menu
+		const oy = this.sizeY / 100; // 1% of the y size of the build Menu
 
-	updateCollisionBoxPozition() {
-		var ox = this.sizeX / 100; // 1% of the x size of the build Menu
-		var oy = this.sizeY / 100; // 1% of the y size of the build Menu
-
-		var sx = this.startX; //the x start point of the calculation
-		var sy = this.startY; //the y start point of the calculation
+		const sx = this.startX;
+		const sy = this.startY;
 
 		this.buildCollisionBox = [
 			{x: sx + ox * 11,
@@ -203,51 +194,33 @@ export class BuildSystem {
 		];
 	}
 
-	updatePriceList() {
-		for(let i = 0; i < 4; i++) {
+	updatePriceList(): void {
+		for (let i = 0; i < 4; i++) {
 			this.priceList[i].value = towerTypes[this.imagePozList[i].type]['cost'];
 		}
 	}
 
-	/**
-	 * @description Check if we clicked on a building place.Place a new tower (must be in building mode).
-	 * @param {*} mousePoz mouse position
-	 * @param {*} fps number of frames per second
-	 */
-	buildTower(index: number, mousePoz: any, fps: number) {
-		const b = Engine.getBoxList()[this.indexBuildingPlace];
-		if(Engine.getMoney() >= this.priceList[index].value) {
+	buildTower(index: number, mousePoz: MousePosition, fps: number): void {
+		const b: BuildingPlace = Engine.getBoxList()[this.indexBuildingPlace];
+
+		if (Engine.getMoney() >= this.priceList[index].value) {
 			Engine.decreaseMoney(this.priceList[index].value);
 			Engine.getGameState().reset();
 
-			switch(index) {
-				case 0:
-					Engine.addTower(new Tower('magma-tower', 5, b.pozX, b.pozY, b.size, b.size,fps));
-					break;
+			const TowerTypeList: TOWER_TYPE[] = [TOWER_TYPE.FIRE, TOWER_TYPE.FROST, TOWER_TYPE.CANNON, TOWER_TYPE.BOULDER];
+			const towerType:TOWER_TYPE = TowerTypeList[index];
 
-				case 1:
-					Engine.addTower(new Tower('frost-tower', 5, b.pozX, b.pozY, b.size, b.size,fps));
-					break;
-
-				case 2:
-					Engine.addTower(new Tower('cannon-tower', 5, b.pozX, b.pozY, b.size, b.size,fps));
-					break;
-
-				case 3:
-					Engine.addTower(new Tower('boulder-tower', 5, b.pozX, b.pozY, b.size, b.size,fps));
-					break;
-			}
-
+			Engine.addTower(new Tower(towerType, 5, b.px, b.py, b.sizeX, b.sizeY, fps));
 			Engine.removeBox(this.indexBuildingPlace);
 		} else {
 			this.applySoundLogic();
 		}
 	}
 
-	applySoundLogic() {
-		if(Engine.getSound().on) {
+	applySoundLogic(): void {
+		if (Engine.getSound().on) {
 			this.noGold.volume = 0.3;
-		}else {
+		} else {
 			this.noGold.volume = 0;
 		}
 		this.noGold.play();

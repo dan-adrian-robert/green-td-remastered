@@ -162,9 +162,9 @@ export class Spell {
 
     getEnemiesInRange() {
         const listEnemy = Engine.getEnemyList();
-        for(let i = 0; i < listEnemy.length; i++ ) {
-            const ex = listEnemy[i].pozX + listEnemy[i].sizeX / 2;
-            const ey = listEnemy[i].pozY + listEnemy[i].sizeY / 2;
+        for (let i = 0; i < listEnemy.length; i++ ) {
+            const ex = listEnemy[i].px + listEnemy[i].sizeX / 2;
+            const ey = listEnemy[i].py + listEnemy[i].sizeY / 2;
 
             const x = ex - this.aoePozX + this.aoeSizeX / 2;
             const y = ey - this.aoePozY + this.aoeSizeY / 2;

@@ -17,16 +17,18 @@ import {Bullet} from "./objects/Bullet";
 import {GAME_ASSET_FORMAT} from "../imageTypes";
 import {CANVAS} from "../config/globals";
 import {Coin} from "./objects/Coin";
+import {BuildingPlace} from "./objects/BuildingPlace";
+import {Kamikaze} from "./objects/Kamikaze";
 
 export namespace Engine {
     let imageMap: GAME_ASSET_FORMAT;
 
     let sumOfMoney = 900;
     let listEnemy: Enemy[] = [];
-    let listAlly: any[] = [];
+    let listAlly: Kamikaze[] = [];
     let listTraps: Trap[] = [];
-    let listBullets : any[] = [];
-    let listBox: any[] = [];
+    let listBullets : Bullet[] = [];
+    let listBox: BuildingPlace[] = [];
     let listTowers: Tower[] = [];
     let staticLevels: any[];
 
@@ -261,15 +263,15 @@ export namespace Engine {
         listEnemy.push(enemy);
     }
 
-    export const getAllyList = () => {
+    export const getAllyList = (): Kamikaze[] => {
         return listAlly;
     }
 
-    export const setAllyList = (list: any[]) => {
+    export const setAllyList = (list: Kamikaze[]): void => {
         listAlly = list;
     }
 
-    export const addAlly = (ally: any) => {
+    export const addAlly = (ally: Kamikaze): void => {
         listAlly.push(ally);
     }
 
@@ -281,35 +283,35 @@ export namespace Engine {
         listTraps = list;
     }
 
-    export const getBulletList = () => {
+    export const getBulletList = (): Bullet[] => {
         return listBullets;
     }
 
-    export const setBulletList = (list: any[]) => {
+    export const setBulletList = (list: Bullet[]): void => {
         listBullets = list;
     }
 
-    export const addBullet = (bullet: Bullet) => {
+    export const addBullet = (bullet: Bullet): void => {
         listBullets.push(bullet);
     }
 
-    export const removeBullet = (index: number) => {
+    export const removeBullet = (index: number): void => {
         listBullets = listBullets.splice(index, 1);
     }
 
-    export const getBoxList = () => {
+    export const getBoxList = (): BuildingPlace[] => {
         return listBox;
     }
 
-    export const setBoxList = (list: any[]) => {
+    export const setBoxList = (list: BuildingPlace[]): void => {
         listBox = list;
     }
 
-    export const addBox = (box:any) => {
+    export const addBox = (box:any): void => {
         listBox.push(box);
     }
 
-    export const removeBox = (index: number) => {
+    export const removeBox = (index: number): void => {
         listBox.splice(index, 1);
     }
 
@@ -317,7 +319,7 @@ export namespace Engine {
         return listTowers;
     }
 
-    export const setTowerList = (list: any[]) => {
+    export const setTowerList = (list: Tower[]): void => {
         listTowers = list;
     }
 

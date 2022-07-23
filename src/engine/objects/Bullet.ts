@@ -1,34 +1,12 @@
-/**
- * @description Bullet Constructor
- * @param {*} image_src source to the sprite sheet
- * @param {*} image_width sprite sheet width
- * @param {*} image_height sprite sheet height
- * @param {*} sizeX x size
- * @param {*} sizeY y size
- * @param {*} startX  x position
- * @param {*} startY y position
- * @param {*} angle bullet angle
- * @param {*} speed bullet speed
- * @param {*} dmg damage
- * @param {*} range range
- * @param {*} effect effect to add on bullet
- * @param {*} effect_duration duration of the effect
- * @param {*} fps number of frames per second
- */
 import {Engine} from "../Engine.";
+import {Sprite} from "./Sprite";
 
-
-export class Bullet {
-	pozX: number;
-	pozY: number;
-	sizeX: number;
-	sizeY: number;
+export class Bullet extends Sprite {
 	angle: any;
 	speed: number;
 	effect: number;
 	effect_duration: any;
 	dmg: any;
-	image: any;
 	centerX: number;
 	centerY: number;
 
@@ -36,54 +14,42 @@ export class Bullet {
 	fps: number;
 	ticks: number;
 
-	constructor(image: any, image_width:number, image_height: number, sizeX: number, sizeY: number, startX:number,
-				startY: number, angle: any, speed: number, dmg: any, range: number, effect: any, effect_duration: any,
+	constructor(image: any, spSizeX:number, spSizeY: number, sizeX: number, sizeY: number, px:number,
+				py: number, angle: any, speed: number, dmg: any, range: number, effect: any, effect_duration: any,
 				fps: number) {
-		//position
-		this.pozX = startX;
-		this.pozY = startY;
 
-		//size
-		this.sizeX = sizeX;
-		this.sizeY = sizeY;
+		super(image, 0, 0, spSizeX, spSizeY, px, py, sizeX, sizeY);
 
-		//attributes
 		this.angle = angle;
 		this.speed = speed;
 		this.effect = effect;
 		this.effect_duration = effect_duration;
 		this.dmg = dmg;
 
-		this.image = image;
-
-		this.sizeX = image_width;
-		this.sizeY = image_height;
-
-		this.centerX = startX;
-		this.centerY = startY;
+		this.centerX = px;
+		this.centerY = py;
 		this.range = range;
 
 		this.fps = fps;
 		this.ticks = 0;
 	}
 
-	//updates the current position of the enemy
-	move() {
-		this.pozX += Math.cos(this.angle) * this.speed;
-		this.pozY += Math.sin(this.angle) * this.speed;
+	move(): void {
+		this.px += Math.cos(this.angle) * this.speed;
+		this.py += Math.sin(this.angle) * this.speed;
 	}
 
-	render(list: any) {
+	render(list: Bullet[]): void {
 		for (let i = 0; i < list.length; i++) {
-			Engine.getCanvasContext().drawImage(list[i].image, list[i].pozX, list[i].pozY, list[i].sizeX, list[i].sizeY);
+			const {image, spx, spy, spSizeX, spSizeY, px, py, sizeX, sizeY} = list[i];
+			Engine.getCanvasContext().drawImage(image, spx, spy, spSizeX, spSizeY, px, py, sizeX, sizeY);
 		}
 	}
 
-	//render the collision range of the bullet
 	renderRange(list: any) {
-		for(var i = 0; i < list.length; i++){
-			var X = list[i].pozX + list[i].sizeX / 2;
-			var Y = list[i].pozY + list[i].sizeY / 2;
+		for (let i = 0; i < list.length; i++) {
+			const X = list[i].pozX + list[i].sizeX / 2;
+			const Y = list[i].pozY + list[i].sizeY / 2;
 
 			Engine.getCanvasContext().beginPath();
 			Engine.getCanvasContext().arc(X, Y, list[i].sizeX/2, 0, 2 * Math.PI, false);
@@ -91,24 +57,18 @@ export class Bullet {
 		}
 	}
 
-	//calls the move function to each bullet in the list
-	moveBullets(list: any) {
+	moveBullets(list: Bullet[]) {
 		for(let i = 0; i < list.length; i++) {
 			list[i].move();
 		}
 	}
 
-	/* Removes the bullets if they are outside the canvas 
-	 * @list - bullet list
-	 * @width - canvas width
-	 * @height - canvas height
-	 */
-	removeBullets(list: any, width: number, height: number) {
+	removeBullets(list: Bullet[], width: number, height: number): Bullet[] {
 		for(let i = 0; i < list.length; i++) {
-			const rx = Math.pow(list[i].pozX - list[i].centerX, 2);
-			const ry = Math.pow(list[i].pozY - list[i].centerY, 2);
-			if(list[i].pozY > height || list[i].pozY < 0 ||
-			   list[i].pozX > width || list[i].pozX < 0  || 
+			const rx = Math.pow(list[i].px - list[i].centerX, 2);
+			const ry = Math.pow(list[i].py - list[i].centerY, 2);
+			if(list[i].py > height || list[i].py < 0 ||
+			   list[i].px > width || list[i].px < 0  ||
 			   rx + ry > Math.pow(list[i].range,2 )) {
 			 	list.splice(i, 1);
 			}
@@ -116,8 +76,7 @@ export class Bullet {
 		return list;
 	}
 
-	//applies all the logic behind the bullets in the list
-	applyLogic(list: any) {
+	applyLogic(list: Bullet[]) {
 		this.moveBullets(list);
 		this.render(list);
 	}

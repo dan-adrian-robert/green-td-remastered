@@ -1,14 +1,10 @@
-/**
- * @description Map Constructor -1280-720
- * @param {*} image_src source to the sprite sheet
- * @param {*} image_width sprite sheet width
- * @param {*} image_height sprite sheet height
- */
 import {Engine} from "../Engine.";
+import {RoadAttribute} from "../../types";
+import {CheckPoint} from "./CheckPoint";
 
 export class GameMap {
 	image: any;
-	checkPoints: any [];
+	checkPoints: CheckPoint[];
 
 	constructor(mapImage:any, image_width: number, image_height:number) {
 		this.image = mapImage;
@@ -16,18 +12,18 @@ export class GameMap {
 	}
 
 	render() {
-		const sx = Engine.getBorder().sx;
-		const sy = Engine.getBorder().sy;
+		const sx = Engine.getBorder().px;
+		const sy = Engine.getBorder().py;
 		const fx = Engine.getCanvas().width / 100 * 78 - 2 * sx;
 		const fy = Engine.getCanvas().height - 2 * sy;
 		Engine.getCanvasContext().drawImage(this.image, 0, 0, this.image.width, this.image.height, sx, sy, fx, fy);
 	}
 
-	getCheckPoints() {
+	getCheckPoints():CheckPoint[] {
 		return this.checkPoints;
 	}
 
-	addCheckPoints(cp: any) {
+	addCheckPoints(cp: CheckPoint) {
 		this.checkPoints.push(cp);
 	}
 
@@ -37,13 +33,13 @@ export class GameMap {
 		}
 	}
 
-	getCp(index: number) {
+	getCp(index: number): CheckPoint {
 		//TODO add check for index out of bounds
 		return this.checkPoints[index];
 	}
 }
 
-export const roadAttributes = [
+export const roadAttributes: RoadAttribute[] = [
 	{x: 70,   y: 138,  sizeX: 221, sizeY: 30},
 	{x: 264,  y: 180,  sizeX: 28,  sizeY: 80},
 	{x: 306,  y: 235,  sizeX: 110, sizeY: 29},
