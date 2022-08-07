@@ -3,13 +3,12 @@ import {Engine} from "../Engine.";
 import {Sprite} from "./Sprite";
 
 export class Base extends Sprite {
-    hp: any;
+    hp: Hp;
 
-    constructor (image: any, sx: number, sy: number, sWidth:number, sHeight: number,
-                 dx: number, dy: number, dWidth: number, dHeight: number) {
+    constructor (image: any, spx: number, spy: number, spSizeX:number, spSizeY: number,
+                 px: number, py: number, sizeX: number, sizeY: number) {
 
-        super(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
-
+        super(image, spx, spy, spSizeX, spSizeY, px, py, sizeX, sizeY);
         this.hp = new Hp(this.px + 55, this.py + 10, 100, 8, 100);
     }
 

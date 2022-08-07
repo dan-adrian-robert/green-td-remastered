@@ -19,6 +19,7 @@ import {CANVAS} from "../config/globals";
 import {Coin} from "./objects/Coin";
 import {BuildingPlace} from "./objects/BuildingPlace";
 import {Kamikaze} from "./objects/Kamikaze";
+import {BulletSystem} from "./systems/BulletSystem";
 
 export namespace Engine {
     let imageMap: GAME_ASSET_FORMAT;
@@ -59,17 +60,17 @@ export namespace Engine {
 
     let towerSystem: Tower;
     let enemySystem: Enemy;
-    let bulletSystem: Bullet;
+    let bulletSystem: BulletSystem;
 
     export const toggleRenderRange = () => {
         gameState.renderRange = !gameState.renderRange;
     }
 
-    export const getBulletSystem = (): Bullet => {
+    export const getBulletSystem = (): BulletSystem => {
         return bulletSystem;
     }
 
-    export const setBulletSystem = (newBulletSystem: Bullet): void => {
+    export const setBulletSystem = (newBulletSystem: BulletSystem): void => {
         bulletSystem = newBulletSystem;
     }
 

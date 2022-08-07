@@ -36,9 +36,9 @@ export const collideBulletsEnemies = () => {
 				   Math.abs(ey - by) < ry) {
 						listEnemy[i].hp.value -= listBullets[j].dmg;
 
-						// add bullet debuff
+						// add bullet de-buff
 						listEnemy[i].debuffs.push({"effect": listBullets[j].effect,
-													"effect_duration": listBullets[j].effect_duration,
+													"effect_duration": listBullets[j].effectDuration,
 													"dmg": listBullets[j].dmg,
 												})
 						listBullets.splice(j,1);
@@ -76,7 +76,7 @@ export const collideTrapsEnemies = () => {
 	const listTraps = Engine.getAllyList();
 
 	for (let i = 0; i < listEnemy.length; i++) {
-		for(let j = 0; j < listTraps.length; j++) {
+		for (let j = 0; j < listTraps.length; j++) {
 			const ex = listEnemy[i].px + listEnemy[i].sizeX / 2;
 			const ey = listEnemy[i].py + listEnemy[i].sizeY / 2;
 
@@ -170,7 +170,7 @@ export const collideEnemiesBase = () => {
 		}
 	}
 
-	if (Engine.getBase().hp <= 0) {
+	if (Engine.getBase().hp.value <= 0) {
 		Engine.getGameState().loseGame();
 	}
 };

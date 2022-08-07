@@ -121,7 +121,15 @@ export type BulletConfig = {
     [key in BULLET_TYPE]: {
         'bullet-speed': number,
         damage: number,
-        effect: string,
+        effect: BULLET_EFFECT,
         'time-effect': number,
     }
+}
+
+export enum BULLET_EFFECT {
+    BURN='BURN',
+    SLOW='SLOW',
+    NONE='NONE',
+    STUN='STUN',
+    POISON='POISON'
 }

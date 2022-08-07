@@ -118,8 +118,7 @@ export class Tower extends Sprite {
 				Engine.addBullet(
 					new Bullet(image, 26, 26,
 								13, 13, this.px + this.sizeX / 2, this.py + this.sizeY / 2,
-								this.angle, this.bulletSpeed, this.dmg , this.range, effect, effectDuration,
-								this.fps));
+								this.angle, this.bulletSpeed, this.dmg , this.range, effect, effectDuration));
 				this.applySoundLogic();
 			}
 		} else {
