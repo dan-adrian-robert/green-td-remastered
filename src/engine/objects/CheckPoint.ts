@@ -1,14 +1,15 @@
 import {Engine} from "../Engine.";
+import {Direction} from "../../types";
 
 export class CheckPoint {
 	x: number;
 	y: number;
 	size: number;
-	dir: any;
-	final: any;
-	id: any;
+	dir: Direction;
+	final: boolean;
+	id: number;
 
-	constructor(px: number, py: number, size: any, direction: any, id: any, final: any = null) {
+	constructor(px: number, py: number, size: any, direction: Direction, id: number = 0, final: boolean = false) {
 		this.x = px;
 		this.y = py;
 		this.size = size;

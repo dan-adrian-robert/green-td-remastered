@@ -20,9 +20,11 @@ import {Coin} from "./objects/Coin";
 import {BuildingPlace} from "./objects/BuildingPlace";
 import {Kamikaze} from "./objects/Kamikaze";
 import {BulletSystem} from "./systems/BulletSystem";
+import {GAME_SOUND_FORMAT} from "../SoundTypes";
 
 export namespace Engine {
     let imageMap: GAME_ASSET_FORMAT;
+    let soundMap: GAME_SOUND_FORMAT;
 
     let sumOfMoney = 900;
     let listEnemy: Enemy[] = [];
@@ -355,9 +357,17 @@ export namespace Engine {
         return imageMap;
     }
 
+    export const setSoundMap = (newSoundMap:GAME_SOUND_FORMAT): void => {
+        soundMap = newSoundMap;
+    }
+
+    export const getSoundMap = (): GAME_SOUND_FORMAT => {
+        return soundMap;
+    }
+
     export const applyEnemyLogic = () => {
        Engine.setEnemyList(listEnemy.map((enemy: Enemy) => {
-            enemy.colideWithCheckPoint(map);
+            enemy.collideWithCheckPoint(map);
             enemy.move();
             // enemy.applyDebuffs();
             // enemy.tick_debuffs();

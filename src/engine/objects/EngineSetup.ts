@@ -23,13 +23,16 @@ import {Enemy} from "./Enemy";
 import {Tower} from "./Tower";
 import {Direction, MOB_TYPE, TOWER_TYPE} from "../../types";
 import {BulletSystem} from "../systems/BulletSystem";
+import {GAME_SOUND_FORMAT} from "../../SoundTypes";
+import {buildSoundMap} from "../../Sounds";
 
 export const setupGame = () => {
     const imageMap = buildImageMap();
     Engine.setImageMap(imageMap);
 
-    console.log(imageMap[FOLDER_PATHS.UI].border)
-    console.log(imageMap[FOLDER_PATHS.UI].gameBorder)
+    const soundMap: GAME_SOUND_FORMAT = buildSoundMap();
+    Engine.setSoundMap(soundMap);
+
     const border = new Border(imageMap[FOLDER_PATHS.UI].border, imageMap[FOLDER_PATHS.UI].gameBorder, CANVAS.width, CANVAS.height,25, 27);
     Engine.setBorder(border);
 
@@ -130,32 +133,32 @@ export const initWorld = () => {
     const imageMap = Engine.getImageMap();
 
     Engine.setMap(new GameMap(imageMap[FOLDER_PATHS.MAPS].map, 750, 460));
-    Engine.getMap().addCheckPoints(new CheckPoint(20, 105, 40, 'right',false));
-    Engine.getMap().addCheckPoints(new CheckPoint(315, 110, 40, 'down',false));
-    Engine.getMap().addCheckPoints(new CheckPoint(282, 280, 40, 'right',false));
-    Engine.getMap().addCheckPoints(new CheckPoint(440, 200, 40, 'up',false));
-    Engine.getMap().addCheckPoints(new CheckPoint(415, -30, 40, 'right',false));
-    Engine.getMap().addCheckPoints(new CheckPoint(570, 0, 40, 'down',false));
-    Engine.getMap().addCheckPoints(new CheckPoint(540, 240, 40, 'right',false));
-    Engine.getMap().addCheckPoints(new CheckPoint(635, 220, 40, 'right',true)); //7
+    Engine.getMap().addCheckPoints(new CheckPoint(20, 105, 40, Direction.right,1,false));
+    Engine.getMap().addCheckPoints(new CheckPoint(315, 110, 40, Direction.down,2,false));
+    Engine.getMap().addCheckPoints(new CheckPoint(282, 280, 40, Direction.right,3,false));
+    Engine.getMap().addCheckPoints(new CheckPoint(440, 200, 40, Direction.up,4,false));
+    Engine.getMap().addCheckPoints(new CheckPoint(415, -30, 40, Direction.right,5,false));
+    Engine.getMap().addCheckPoints(new CheckPoint(570, 0, 40, Direction.down,6,false));
+    Engine.getMap().addCheckPoints(new CheckPoint(540, 240, 40, Direction.right,7,false));
+    Engine.getMap().addCheckPoints(new CheckPoint(635, 220, 40, Direction.right,8,true)); //7
 
-    Engine.getMap().addCheckPoints(new CheckPoint(635, 220, 40, 'left',false)); //8
-    Engine.getMap().addCheckPoints(new CheckPoint(430, 240, 40, 'up',false));
-    Engine.getMap().addCheckPoints(new CheckPoint(430, 0, 40, 'left',false));
-    Engine.getMap().addCheckPoints(new CheckPoint(310, 0, 40, 'down',false));
-    Engine.getMap().addCheckPoints(new CheckPoint(310, 320, 40, 'left',false));
-    Engine.getMap().addCheckPoints(new CheckPoint(170, 320, 40, 'up',false));
-    Engine.getMap().addCheckPoints(new CheckPoint(175, 80, 40, 'left',false));
-    Engine.getMap().addCheckPoints(new CheckPoint(175, 20, 40, 'left',true));
+    Engine.getMap().addCheckPoints(new CheckPoint(635, 220, 40, Direction.left,9,false)); //8
+    Engine.getMap().addCheckPoints(new CheckPoint(430, 240, 40, Direction.up,10,false));
+    Engine.getMap().addCheckPoints(new CheckPoint(430, 0, 40, Direction.left,11,false));
+    Engine.getMap().addCheckPoints(new CheckPoint(310, 0, 40, Direction.down,12,false));
+    Engine.getMap().addCheckPoints(new CheckPoint(310, 320, 40, Direction.left,13,false));
+    Engine.getMap().addCheckPoints(new CheckPoint(170, 320, 40, Direction.up,14,false));
+    Engine.getMap().addCheckPoints(new CheckPoint(175, 80, 40, Direction.left,15,false));
+    Engine.getMap().addCheckPoints(new CheckPoint(175, 20, 40, Direction.left,16,true));
 
-    Engine.getMap().addCheckPoints(new CheckPoint(115, 450, 40, 'up',false)); //16
-    Engine.getMap().addCheckPoints(new CheckPoint(150, 230, 40, 'right',false));
-    Engine.getMap().addCheckPoints(new CheckPoint(390, 230, 40, 'down',false));
-    Engine.getMap().addCheckPoints(new CheckPoint(350, 460, 40, 'right',false));
-    Engine.getMap().addCheckPoints(new CheckPoint(575, 410, 40, 'up',false));
-    Engine.getMap().addCheckPoints(new CheckPoint(525, 110, 40, 'right',false));
+    Engine.getMap().addCheckPoints(new CheckPoint(115, 450, 40, Direction.up,17,false)); //16
+    Engine.getMap().addCheckPoints(new CheckPoint(150, 230, 40, Direction.right,18,false));
+    Engine.getMap().addCheckPoints(new CheckPoint(390, 230, 40, Direction.down,19,false));
+    Engine.getMap().addCheckPoints(new CheckPoint(350, 460, 40, Direction.right,20,false));
+    Engine.getMap().addCheckPoints(new CheckPoint(575, 410, 40, Direction.up,21,false));
+    Engine.getMap().addCheckPoints(new CheckPoint(525, 110, 40, Direction.right,22,false));
 
-    Engine.getMap().addCheckPoints(new CheckPoint(635, 220, 40, 'right',true));
+    Engine.getMap().addCheckPoints(new CheckPoint(635, 220, 40, Direction.right,23,true));
 
     Engine.setBase(new Base( Engine.getImageMap()[FOLDER_PATHS.BUILDINGS].base, 192, 192, 330, 330, 610, 120, 330, 330));
 }

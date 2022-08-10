@@ -57,7 +57,7 @@ export class Kamikaze extends Sprite {
                                             this.px, this.py-30, this.sizeX-30, this.sizeY-30);
     }
 
-    colideWithCheckPoint(map: any): void {
+    collideWithCheckPoint(map: any): void {
         //TODO add check for index out of bounds
         const cp = map.getCp(this.currentCp);
 
@@ -114,11 +114,12 @@ export class Kamikaze extends Sprite {
     applyLogic(list: Kamikaze[], map: GameMap): void {
         this.renderMenuIcon();
         list.map((ally: Kamikaze) => {
-            ally.colideWithCheckPoint(map);
+            ally.collideWithCheckPoint(map);
             ally.changeSpriteDir(ally.dir);
             ally.move();
             ally.updateSprite();
             ally.render();
+            return ally;
         })
     }
 }

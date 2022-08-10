@@ -38,7 +38,7 @@ export class GameState {
 		this.bgSound = new Audio();
 		this.bgSound.volume = 0.8;
 		this.bgSound.loop = true;
-		this.bgSound.src = 'sound/ambient/NightElf.mp3';
+		this.bgSound.src = 'sound/ambient/nightElf.mp3';
 
 
 		this.loseSound = new Audio();

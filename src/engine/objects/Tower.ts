@@ -5,6 +5,7 @@ import {BULLET_TYPE, TOWER_TYPE, UPGRADE_TYPE, UpgradeMetaData} from "../../type
 import {Sprite} from "./Sprite";
 import {bulletTypes, getBulletImage} from "../../config/bulletConfig";
 import {getTowerImage, towerTypes} from "../../config/towerConfig";
+import {SOUND_FOLDER_PATHS} from "../../SoundTypes";
 
 export class Tower extends Sprite {
 	towerType: TOWER_TYPE;
@@ -53,13 +54,11 @@ export class Tower extends Sprite {
 		this.fps = fps;
 		this.dmg = bulletTypes[this.bulletType]['damage'];
 
-
 		this.rangeImage = new Image(230,230);
 		this.rangeImage.src = ('images/ui/range.png');
 
-		this.fireSound = new Audio();
-		this.fireSound.volume = 0.1;
-		this.fireSound.src = 'sound/towers/ArcherShoot.wav';
+		this.fireSound = Engine.getSoundMap()[SOUND_FOLDER_PATHS.TOWERS].towerShoot;
+		console.log(this.fireSound);
 
 		this.upgradeTypes = [
 			{type: UPGRADE_TYPE.RANGE, price: 25, cost:17, value: 10, lvl:1, maxLvl:10},
@@ -67,7 +66,6 @@ export class Tower extends Sprite {
 			{type: UPGRADE_TYPE.DAMAGE, price: 50, cost:45, value: 1, lvl:1, maxLvl:10},
 			{type: UPGRADE_TYPE.EFFECT, price: 100, cost:100, value: 0, lvl:1, maxLvl:3}
 		];
-
 	}
 
 	upgrade(): void {

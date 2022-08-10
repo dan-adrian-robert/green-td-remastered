@@ -1,7 +1,9 @@
 import {Hp} from "./Hp";
-import {Direction, ENEMY_CONFIG, MOB_TYPE} from "../../types";
+import {Direction, MOB_TYPE} from "../../types";
 import {Engine} from "../Engine.";
 import {Sprite} from "./Sprite";
+import {enemyTypes, getEnemyBounty, getEnemyDamange, getEnemyHp} from "../../config/enemyConfig";
+import {GameMap} from "./GameMap";
 
 export class Enemy extends Sprite {
 	debuffs: any[];
@@ -9,15 +11,15 @@ export class Enemy extends Sprite {
 	enemyType: MOB_TYPE;
 	active_debuffs: any;
 	dir: Direction;
-	speed: any;
-	hp: any;
-	currentCp: any;
+	speed: number;
+	hp: Hp;
+	currentCp: number;
 	animationIndex: number;
 	ticks: number;
 	maxTicks: number;
 
-	bounty: any
-	dmg: any
+	bounty: number;
+	dmg: number;
 
 	dieSound: any;
 	healCD: any;
@@ -42,11 +44,11 @@ export class Enemy extends Sprite {
 				damage: 0
 			},
 			stun: {
-				"duration": 0, // for boulder
+				"duration": 0,
 				value: 0
 			},
 			poison: {
-				"duration": 0, // for poison (deals dmg and slow)
+				"duration": 0,
 				"slow_value": 0,
 				"dmg_value": 0
 			},
@@ -104,11 +106,10 @@ export class Enemy extends Sprite {
 												this.px, this.py, this.sizeX, this.sizeY);
 	}
 
-	//collide with the checkpoints and change the direction if needed
-	colideWithCheckPoint(map: any) {
+	collideWithCheckPoint(map: GameMap) {
 		const cp = map.getCp(this.currentCp);
 
-		if(Math.abs(this.px - cp.x) < this.sizeX &&
+		if (Math.abs(this.px - cp.x) < this.sizeX &&
 		   Math.abs(this.py - cp.y) < this.sizeY ) {
 			this.dir = cp.dir;
 			this.currentCp += 1;
@@ -117,23 +118,28 @@ export class Enemy extends Sprite {
 	}
 
 	changeSpriteDir(dir: Direction) {
-		if (dir === Direction.right) {
-			this.spy = 3 * this.spSizeY;
-			this.spx = 0;
-		}else if(dir === Direction.left) {
-			this.spy = 1 * this.spSizeY;
-			this.spx = 0;
-		} else if(dir === Direction.down) {
-			this.spy = 0;
-			this.spx = 0;
-		}else if(dir === Direction.up) {
-			this.spy = 2 * this.spSizeY;
-			this.spx = 0;
+		switch (dir) {
+			case (Direction.right):
+				this.spy = 3 * this.spSizeY;
+				this.spx = 0;
+				break;
+			case (Direction.left):
+				this.spy = this.spSizeY;
+				this.spx = 0;
+				break;
+			case (Direction.down):
+				this.spy = 0;
+				this.spx = 0;
+				break;
+			case (Direction.up):
+				this.spy = 2 * this.spSizeY;
+				this.spx = 0;
+				break;
 		}
 	}
 
-	updateSprite() {
-		if(this.ticks > this.maxTicks) {
+	updateSprite(): void {
+		if (this.ticks > this.maxTicks) {
 			this.ticks = 0;
 			this.spx += this.spSizeX;
 			this.spx %= this.image.width;
@@ -214,25 +220,24 @@ export class Enemy extends Sprite {
 			this.active_debuffs.last_tick = current_tick;
 		}
 
-		if(this.active_debuffs.burn["duration"] === 0){
+		if (this.active_debuffs.burn["duration"] === 0){
 			this.active_debuffs.burn["damage"] = 0;
 		}
-		if(this.active_debuffs.stun["duration"] === 0){
+		if (this.active_debuffs.stun["duration"] === 0){
 			this.active_debuffs.stun["value"] = 0;
 		}
-		if(this.active_debuffs.slow["duration"] === 0){
+		if (this.active_debuffs.slow["duration"] === 0){
 			this.active_debuffs.slow["value"] = 0;
 		}
-		if(this.active_debuffs.poison["duration"] === 0){
+		if (this.active_debuffs.poison["duration"] === 0){
 			this.active_debuffs.slow["slow_value"] = 0;
 			this.active_debuffs.slow["dmg_value"] = 0;
 		}
 	}
 
 	castHeal(list: any, currentEnemy: any) {
-		function randomIntFromInterval(min: number,max: number)
-		{
-			return Math.floor(Math.random()*(max-min+1)+min);
+		function randomIntFromInterval(min: number,max: number) {
+			return Math.floor(Math.random() * (max - min + 1) + min);
 		}
 
 		// actual chance of this triggering 30%
@@ -257,152 +262,9 @@ export class Enemy extends Sprite {
 	applySoundLogic(): void {
 		if (Engine.getSound().on) {
 			this.dieSound.volume = 0.1;
-		}else {
+		} else {
 			this.dieSound.volume = 0;
 		}
 		this.dieSound.play();
 	}
-}
-
-export const enemyTypes: ENEMY_CONFIG = {
-	[MOB_TYPE.demolitionSquad]: {
-		hp: 80,
-		speed: 1,
-		damage: 25,
-		image_width: 375,
-		image_height: 300,
-		spriteWidth: 75,
-		spriteHeight: 75,
-		sizeX: 75,
-		sizeY: 75,
-		gold: 15,
-		dieSound:'sound/enemies/MortarDead.wav'
-	},
-	[MOB_TYPE.footman]: {
-		hp: 40,
-		speed: 2,
-		damage: 10,
-		image_width: 375,
-		image_height: 300,
-		spriteWidth: 75,
-		spriteHeight: 75,
-		sizeX: 75,
-		sizeY: 75,
-		gold: 5,
-		dieSound:'sound/enemies/HumanDead.wav'
-	},
-	[MOB_TYPE.orcGrunt]: {
-		hp: 50,
-		speed: 2.1,
-		damage: 10,
-		image_width: 374,
-		image_height: 298,
-		spriteWidth: 75,
-		spriteHeight: 75,
-		sizeX: 75,
-		sizeY: 75,
-		gold: 7,
-		dieSound:'sound/enemies/OrcDead.wav'
-	},
-	[MOB_TYPE.knight]: {
-		hp: 70,
-		speed: 3,
-		damage: 10,
-		image_width: 375,
-		image_height: 299,
-		spriteWidth: 75,
-		spriteHeight: 75,
-		sizeX: 75,
-		sizeY: 75,
-		gold: 17,
-		dieSound:'sound/enemies/KnightDead.wav'
-	},
-	[MOB_TYPE.orcRider]: {
-		hp: 65,
-		speed: 3,
-		damage: 20,
-		image_width: 374,
-		image_height: 298,
-		spriteWidth: 75,
-		spriteHeight: 75,
-		sizeX: 75,
-		sizeY: 75,
-		gold: 15,
-		dieSound:'sound/enemies/RiderDead.wav'
-	},
-	[MOB_TYPE.dragon]: {
-		hp: 400,
-		speed: 1.5,
-		damage: 25,
-		image_width: 375,
-		image_height: 300,
-		spriteWidth: 75,
-		spriteHeight: 75,
-		sizeX: 75,
-		sizeY: 75,
-		gold: 30,
-		dieSound:'sound/enemies/DragonDeath1.wav'
-	},
-	[MOB_TYPE.gryphon]: {
-		hp: 50,
-		speed: 2.5,
-		damage: 10,
-		image_width: 375,
-		image_height: 300,
-		spriteWidth: 75,
-		spriteHeight: 75,
-		sizeX: 75,
-		sizeY: 75,
-		gold: 12,
-		dieSound:'sound/enemies/Grifon.wav'
-	},
-	[MOB_TYPE.archer]: {
-		hp: 20,
-		speed: 2.2,
-		damage: 15,
-		image_width: 375,
-		image_height: 300,
-		spriteWidth: 75,
-		spriteHeight: 75,
-		sizeX: 75,
-		sizeY: 75,
-		gold: 7,
-		dieSound:'sound/enemies/Archer.wav'
-	},
-	[MOB_TYPE.ogre]: {
-		hp: 350,
-		speed: 2.3,
-		damage: 30,
-		image_width: 375,
-		image_height: 300,
-		spriteWidth: 75,
-		spriteHeight: 75,
-		sizeX: 75,
-		sizeY: 75,
-		gold: 20,
-		dieSound:'sound/enemies/Ogre.wav'
-	},
-	[MOB_TYPE.mage]: {
-		hp: 35,
-		speed: 1.8,
-		damage: 25,
-		image_width: 375,
-		image_height: 300,
-		spriteWidth: 75,
-		spriteHeight: 75,
-		sizeX: 75,
-		sizeY: 75,
-		gold: 10,
-		dieSound:'sound/enemies/Mage.wav'
-	},
-};
-
-export const getEnemyHp = (type: MOB_TYPE) => {
-	return enemyTypes[type].hp;
-}
-export const getEnemyBounty = (type: MOB_TYPE) => {
-	return enemyTypes[type].gold;
-}
-export const getEnemyDamange = (type: MOB_TYPE) => {
-	return enemyTypes[type].damage;
 }
