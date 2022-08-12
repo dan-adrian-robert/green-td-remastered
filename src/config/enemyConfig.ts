@@ -1,4 +1,4 @@
-import {ENEMY_CONFIG, MOB_TYPE} from "../types";
+import {ENEMY_CONFIG, ENEMY_SOUNDS, MOB_TYPE} from "../types";
 
 export const enemyTypes: ENEMY_CONFIG = {
     [MOB_TYPE.demolitionSquad]: {
@@ -12,7 +12,7 @@ export const enemyTypes: ENEMY_CONFIG = {
         sizeX: 75,
         sizeY: 75,
         gold: 15,
-        dieSound:'sound/enemies/mortarDead.wav'
+        dieSound: ENEMY_SOUNDS.MORTAR_DEAD
     },
     [MOB_TYPE.footman]: {
         hp: 40,
@@ -25,7 +25,7 @@ export const enemyTypes: ENEMY_CONFIG = {
         sizeX: 75,
         sizeY: 75,
         gold: 5,
-        dieSound:'sound/enemies/humanDead.wav'
+        dieSound: ENEMY_SOUNDS.HUMAN_DEAD
     },
     [MOB_TYPE.orcGrunt]: {
         hp: 50,
@@ -38,7 +38,7 @@ export const enemyTypes: ENEMY_CONFIG = {
         sizeX: 75,
         sizeY: 75,
         gold: 7,
-        dieSound:'sound/enemies/orcDead.wav'
+        dieSound:ENEMY_SOUNDS.ORC_DEAD,
     },
     [MOB_TYPE.knight]: {
         hp: 70,
@@ -51,7 +51,7 @@ export const enemyTypes: ENEMY_CONFIG = {
         sizeX: 75,
         sizeY: 75,
         gold: 17,
-        dieSound:'sound/enemies/knightDead.wav'
+        dieSound: ENEMY_SOUNDS.KNIGHT_DEAD
     },
     [MOB_TYPE.orcRider]: {
         hp: 65,
@@ -64,7 +64,7 @@ export const enemyTypes: ENEMY_CONFIG = {
         sizeX: 75,
         sizeY: 75,
         gold: 15,
-        dieSound:'sound/enemies/riderDead.wav'
+        dieSound:ENEMY_SOUNDS.ORC_DEAD
     },
     [MOB_TYPE.dragon]: {
         hp: 400,
@@ -77,7 +77,7 @@ export const enemyTypes: ENEMY_CONFIG = {
         sizeX: 75,
         sizeY: 75,
         gold: 30,
-        dieSound:'sound/enemies/dragonDeath1.wav'
+        dieSound:ENEMY_SOUNDS.DRAGON_DEAD
     },
     [MOB_TYPE.gryphon]: {
         hp: 50,
@@ -90,7 +90,7 @@ export const enemyTypes: ENEMY_CONFIG = {
         sizeX: 75,
         sizeY: 75,
         gold: 12,
-        dieSound:'sound/enemies/grifon.wav'
+        dieSound:ENEMY_SOUNDS.ORC_DEAD
     },
     [MOB_TYPE.archer]: {
         hp: 20,
@@ -103,7 +103,7 @@ export const enemyTypes: ENEMY_CONFIG = {
         sizeX: 75,
         sizeY: 75,
         gold: 7,
-        dieSound:'sound/enemies/archer.wav'
+        dieSound:ENEMY_SOUNDS.HUMAN_DEAD
     },
     [MOB_TYPE.ogre]: {
         hp: 350,
@@ -116,7 +116,7 @@ export const enemyTypes: ENEMY_CONFIG = {
         sizeX: 75,
         sizeY: 75,
         gold: 20,
-        dieSound:'sound/enemies/ogre.wav'
+        dieSound: ENEMY_SOUNDS.ORC_DEAD
     },
     [MOB_TYPE.mage]: {
         hp: 35,
@@ -129,7 +129,7 @@ export const enemyTypes: ENEMY_CONFIG = {
         sizeX: 75,
         sizeY: 75,
         gold: 10,
-        dieSound:'sound/enemies/mage.wav'
+        dieSound:ENEMY_SOUNDS.HUMAN_DEAD
     },
 };
 

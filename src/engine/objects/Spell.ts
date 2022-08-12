@@ -1,4 +1,6 @@
 import {Engine} from "../Engine.";
+import {SOUND_FOLDER_PATHS} from "../../SoundTypes";
+import {SPELL_SOUNDS} from "../../types";
 
 export class Spell {
 
@@ -40,7 +42,7 @@ export class Spell {
                 splSpriteX: number, splSpriteY: number,
                 splSizeX: number, splSizeY: number,
                 splPositionX: number, splPositionY: number,
-                sound_src: any) {
+                soundType: SPELL_SOUNDS) {
         //------------AOE--------------|
         //image
         this.aoeImage = new Image(image_aoe_width, image_aoe_height);
@@ -81,9 +83,7 @@ export class Spell {
         //------------------------------|
 
         //------------Sound-----------|
-        this.sound = new Audio();
-        this.sound.src = sound_src;
-        //------------------------------|
+        this.sound = Engine.getSoundFromKey(SOUND_FOLDER_PATHS.SPELLS, soundType);
 
         //------------Logic-----------|
         this.tick = 0;

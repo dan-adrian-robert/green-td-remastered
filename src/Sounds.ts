@@ -40,19 +40,20 @@ export const SOUND_MAP: GAME_SOUND_FORMAT = {
 
 export const buildSoundMap = () : GAME_SOUND_FORMAT => {
     const ENEMY_VOLUME = 0.3;
+    const UI_VOLUME = 0.15;
+    const BG_VOLUME = 0.8;
 
     const defeated = new Audio();
     defeated.src = SOUND_MAP[SOUND_FOLDER_PATHS.AMBIENT].defeated;
-    defeated.volume = ENEMY_VOLUME;
+    defeated.volume = BG_VOLUME;
 
     const nightElf= new Audio();
     nightElf.src = SOUND_MAP[SOUND_FOLDER_PATHS.AMBIENT].nightElf;
-    nightElf.volume = ENEMY_VOLUME;
+    nightElf.volume = BG_VOLUME;
 
     const archer= new Audio();
     archer.src = SOUND_MAP[SOUND_FOLDER_PATHS.ENEMIES].archer;
     archer.volume = ENEMY_VOLUME;
-
 
     const dragonDeath1= new Audio();
     dragonDeath1.src = SOUND_MAP[SOUND_FOLDER_PATHS.ENEMIES].dragonDeath1;
@@ -61,7 +62,6 @@ export const buildSoundMap = () : GAME_SOUND_FORMAT => {
     const goblinDead= new Audio();
     goblinDead.src = SOUND_MAP[SOUND_FOLDER_PATHS.ENEMIES].goblinDead;
     goblinDead.volume = ENEMY_VOLUME;
-
 
     const grifon= new Audio();
     grifon.src = SOUND_MAP[SOUND_FOLDER_PATHS.ENEMIES].grifon;
@@ -87,7 +87,6 @@ export const buildSoundMap = () : GAME_SOUND_FORMAT => {
     ogre.src = SOUND_MAP[SOUND_FOLDER_PATHS.ENEMIES].ogre;
     ogre.volume = ENEMY_VOLUME;
 
-
     const orcDead= new Audio();
     orcDead.src = SOUND_MAP[SOUND_FOLDER_PATHS.ENEMIES].orcDead;
     orcDead.volume = ENEMY_VOLUME;
@@ -98,7 +97,7 @@ export const buildSoundMap = () : GAME_SOUND_FORMAT => {
 
     const buttonClick= new Audio();
     buttonClick.src = SOUND_MAP[SOUND_FOLDER_PATHS.UI].buttonClick;
-    buttonClick.volume = ENEMY_VOLUME;
+    buttonClick.volume = UI_VOLUME;
 
     const humanNoGold= new Audio();
     humanNoGold.src = SOUND_MAP[SOUND_FOLDER_PATHS.UI].humanNoGold;

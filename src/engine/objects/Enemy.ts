@@ -4,6 +4,7 @@ import {Engine} from "../Engine.";
 import {Sprite} from "./Sprite";
 import {enemyTypes, getEnemyBounty, getEnemyDamange, getEnemyHp} from "../../config/enemyConfig";
 import {GameMap} from "./GameMap";
+import {SOUND_FOLDER_PATHS} from "../../SoundTypes";
 
 export class Enemy extends Sprite {
 	debuffs: any[];
@@ -24,7 +25,7 @@ export class Enemy extends Sprite {
 	dieSound: any;
 	healCD: any;
 
-	constructor(startX:number, startY:number, direction: Direction, indexCp: any, type: MOB_TYPE, hpMultiplier:number, dmgMultiplier:number) {
+	constructor(startX:number, startY:number, direction: Direction, indexCp: any, type: MOB_TYPE, hpMultiplier:number, dmgMultiplier:number, dieSound: any) {
 		const image = {}
 		super(image,0,0, enemyTypes[type].spriteWidth, enemyTypes[type].spriteHeight,
 			startX, startY,  enemyTypes[type].sizeX,  enemyTypes[type].sizeY);
@@ -72,10 +73,8 @@ export class Enemy extends Sprite {
 
 		this.bounty = getEnemyBounty(this.enemyType);
 		this.dmg = getEnemyDamange(this.enemyType) * dmgMultiplier;
-
-		this.dieSound = new Audio();
-		this.dieSound.volume = 0.1;
-		this.dieSound.src = enemyTypes[this.enemyType].dieSound;
+		this.dieSound = dieSound;
+		// this.dieSound = Engine.getSoundFromKey(SOUND_FOLDER_PATHS.ENEMIES, enemyTypes[this.enemyType].dieSound)
 	}
 
 	move() {

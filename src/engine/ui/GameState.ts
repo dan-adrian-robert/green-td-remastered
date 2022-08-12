@@ -1,7 +1,7 @@
-//Menu GameState Constructor
 import {Level} from "../objects/Level";
-import {GameTypes, MOB_TYPE} from "../../types";
+import {AMBIENT_SOUNDS, GameTypes, MOB_TYPE, UI_SOUNDS} from "../../types";
 import {Engine} from "../Engine.";
+import {SOUND_FOLDER_PATHS} from "../../SoundTypes";
 
 export class GameState {
 	states: any[];
@@ -17,130 +17,110 @@ export class GameState {
 	bgSound: any;
 	loseSound: any;
 
-	constructor() {
-		//The possible game states
+	constructor(clickSound: any, bgSound: any, loseSound: any) {
 		this.states = ['Menu', 'GamePlay', 'Pause', 'GameOver', 'Difficulty'];
 
-		//Current state
 		this.stateSelected = 0;
 
-		//when u press the buildMode, it is activated
 		this.buildMode = false;
 		this.upgradeMode = false;
 		this.renderRange = false;
 		this.buildTrap = false;
 		this.placeSpell = false;
 
-		this.clickSound = new Audio();
-		this.clickSound.volume = 0.15;
-		this.clickSound.src = "sound/ui/buttonClick.wav";
-
-		this.bgSound = new Audio();
-		this.bgSound.volume = 0.8;
-		this.bgSound.loop = true;
-		this.bgSound.src = 'sound/ambient/nightElf.mp3';
-
-
-		this.loseSound = new Audio();
-		this.loseSound.volume = 0.8;
-		this.loseSound.src = 'sound/ambient/defeated.wav';
-
-		//init the menu Buttons
+		this.clickSound = clickSound;
+		this.bgSound = bgSound;
+		this.loseSound = loseSound;
 		this.menuState();
 	}
 
-	startGame () {
-		// get difficulty and set static levels
+	startGame (): void {
 		let difficulty = Engine.getMenu().getCurrentDifficulty();
 
-		if (difficulty == null){
+		if (difficulty == null) {
 			difficulty = GameTypes.Easy;
 		}
 
 		const staticLevels = [];
 		staticLevels.push(new Level(1, difficulty, 6, [MOB_TYPE.footman], false, 0));
-		staticLevels.push(new Level(2, difficulty, 7, ['orc_grunt'], false, 0));
-		staticLevels.push(new Level(3, difficulty, 5, ['dwarven-demolition-squad'], false, 0));
-		staticLevels.push(new Level(4, difficulty, 8, ['human_knight'], false, 0));
-		staticLevels.push(new Level(5, difficulty, 1, ['dragon_boss'], true, 0));
-		staticLevels.push(new Level(6, difficulty, 8, ['mage'], false, 0));
-		staticLevels.push(new Level(7, difficulty, 10, ['orc_rider'], false, 0));
-		staticLevels.push(new Level(8, difficulty, 12, ['gryphon'], false, 0));
-		staticLevels.push(new Level(9, difficulty, 10, ['archer'], false, 0));
-		staticLevels.push(new Level(10, difficulty, 1, ['ogre'], true, 0));
+		staticLevels.push(new Level(2, difficulty, 7, [MOB_TYPE.orcGrunt], false, 0));
+		staticLevels.push(new Level(3, difficulty, 5, [MOB_TYPE.demolitionSquad], false, 0));
+		staticLevels.push(new Level(4, difficulty, 8, [MOB_TYPE.knight], false, 0));
+		staticLevels.push(new Level(5, difficulty, 1, [MOB_TYPE.dragon], true, 0));
+		staticLevels.push(new Level(6, difficulty, 8, [MOB_TYPE.mage], false, 0));
+		staticLevels.push(new Level(7, difficulty, 10, [MOB_TYPE.orcRider], false, 0));
+		staticLevels.push(new Level(8, difficulty, 12, [MOB_TYPE.gryphon], false, 0));
+		staticLevels.push(new Level(9, difficulty, 10, [MOB_TYPE.archer], false, 0));
+		staticLevels.push(new Level(10, difficulty, 1, [MOB_TYPE.ogre], true, 0));
 		Engine.setStaticLevels(staticLevels);
 		this.stateSelected = 1;
 	};
 
 	applySoundLogic() {
-		if(Engine.getSound().on) {
+		if (Engine.getSound().on) {
 			this.bgSound.volume = 0.8;
 			this.loseSound.volume = 0.8;
 
-			if(this.isGameStarted()) {
+			if (this.isGameStarted()) {
 				this.bgSound.play();
 			}
-			else if(this.isGameOver()) {
+			else if (this.isGameOver()) {
 				this.loseSound.play();
 			}
-
 		} else {
 			this.bgSound.volume = 0;
 			this.loseSound.volume = 0;
 		}
-
 	}
 
-	pauseGame() {
+	pauseGame(): void {
 		this.stateSelected = 2;
 	};
 
-	loseGame() {
+	loseGame(): void {
 		this.stateSelected = 3;
 	};
 
-	menuState() {
+	menuState(): void {
 		this.stateSelected = 0;
 	};
 
 	setDifficultyStat () {
 		this.stateSelected = 4;
 	}
-	//~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-	//State getter
-	getCurrentState() {
+	getCurrentState(): void {
 		return this.states[this.stateSelected];
 	};
 
-	isGameStarted() {
-		return (this.stateSelected === 1);
+	isGameStarted(): boolean {
+		return this.stateSelected === 1;
 	};
 
-	isGamePaused() {
-		return (this.stateSelected === 2);
+	isGamePaused(): boolean {
+		return this.stateSelected === 2;
 	};
 
-	isGameOver() {
-		return (this.stateSelected === 3);
+	isGameOver(): boolean {
+		return this.stateSelected === 3;
 	};
 
-	isMenu() {
+	isMenu(): boolean  {
 		return (this.stateSelected === 0);
 	};
 
-	isSetDifficulty() {
-		return (this.stateSelected === 4);
+	isSetDifficulty(): boolean  {
+		return this.stateSelected === 4;
 	}
 
-	reset() {
+	reset(): void {
 		this.buildMode = false;
 		this.upgradeMode = false;
 		this.buildTrap = false;
 		this.placeSpell = false;
 	}
 
-	setRenderState() {
+	setRenderState(): void {
 		this.renderRange = !this.renderRange;
 	}
 }

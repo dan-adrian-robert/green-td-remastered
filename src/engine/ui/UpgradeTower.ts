@@ -1,7 +1,8 @@
 import {Engine} from "../Engine.";
 import {FOLDER_PATHS} from "../../imageTypes";
-import {ImageMetaData} from "../../types";
+import {ImageMetaData, UI_SOUNDS} from "../../types";
 import {Tower} from "../objects/Tower";
+import {SOUND_FOLDER_PATHS} from "../../SoundTypes";
 
 export class UpgradeTower {
 	upMenuImage: any;
@@ -48,16 +49,11 @@ export class UpgradeTower {
 
 		//The position list  of the upgrades images
 		this.imagePozList = [];
-
-		//The upgrade price list.
 		this.priceList = [];
-
 		this.upgradeCollisionBox = [];
 		this.indexTowerUpgraded = -1;
 
-		this.noGold = new Audio();
-		this.noGold.volume = 0.3;
-		this.noGold.src = 'sound/ui/humanNoGold.wav';
+		this.noGold = Engine.getSoundFromKey(SOUND_FOLDER_PATHS.UI, UI_SOUNDS.HUMAN_NO_GOLD);
 
 		this.init();
 	}

@@ -21,10 +21,11 @@ import {FOLDER_PATHS} from "../../imageTypes";
 import {Coin} from "./Coin";
 import {Enemy} from "./Enemy";
 import {Tower} from "./Tower";
-import {Direction, MOB_TYPE, TOWER_TYPE} from "../../types";
+import {Direction, ENEMY_SOUNDS, MOB_TYPE, SOUNDS_LIST, SPELL_SOUNDS, TOWER_TYPE} from "../../types";
 import {BulletSystem} from "../systems/BulletSystem";
-import {GAME_SOUND_FORMAT} from "../../SoundTypes";
+import {GAME_SOUND_FORMAT, SOUND_FOLDER_PATHS} from "../../SoundTypes";
 import {buildSoundMap} from "../../Sounds";
+import {enemyTypes} from "../../config/enemyConfig";
 
 export const setupGame = () => {
     const imageMap = buildImageMap();
@@ -49,13 +50,13 @@ export const setupGame = () => {
         30, 30, 30, 25, 30, 30);
     Engine.setSound(sound);
 
-    const spell = new Spell("images/spells/aoe.png", 550, 550,
-        "images/spells/thunder.png", 228, 215,
+    const spell = new Spell(Engine.getImageMap()[FOLDER_PATHS.SPELLS].aoe, 550, 550,
+        Engine.getImageMap()[FOLDER_PATHS.SPELLS].thunder, 228, 215,
         150, 150,
         150, 150,
         76, 215,
         75, 150,
-        300, 200,'sound/spells/thunder.wav');
+        300, 200, SPELL_SOUNDS.THUNDER);
     Engine.setSpell(spell);
 
 
@@ -67,7 +68,8 @@ export const setupGame = () => {
 
     Engine.setCoin(new Coin(imageMap[FOLDER_PATHS.UI].goldCoin, 14, 14, 15, 14, 950, 43));
 
-    const enemyObject = new Enemy(35, 35, Direction.right,5, MOB_TYPE.footman, 1, 1);
+    const dieSound = Engine.getSoundFromKey(SOUND_FOLDER_PATHS.ENEMIES, ENEMY_SOUNDS.HUMAN_DEAD);
+    const enemyObject = new Enemy(35, 35, Direction.right,5, MOB_TYPE.footman, 1, 1, dieSound);
     Engine.setEnemySystem(enemyObject);
 
     const towerObject = new Tower(TOWER_TYPE.CANNON, 5, 0, 0, 45, 55, 50);

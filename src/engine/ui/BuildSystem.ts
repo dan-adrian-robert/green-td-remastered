@@ -2,8 +2,9 @@ import {Tower} from "../objects/Tower";
 import {Engine} from "../Engine.";
 import {FOLDER_PATHS} from "../../imageTypes";
 import {BuildingPlace} from "../objects/BuildingPlace";
-import {BuildTowerMetaData, MousePosition, TOWER_TYPE} from "../../types";
+import {BuildTowerMetaData, MousePosition, TOWER_TYPE, UI_SOUNDS} from "../../types";
 import {towerTypes} from "../../config/towerConfig";
+import {SOUND_FOLDER_PATHS} from "../../SoundTypes";
 
 export class BuildSystem {
 	buildMenuImage: any;
@@ -57,9 +58,7 @@ export class BuildSystem {
 		this.buildCollisionBox = [];
 		this.indexTowerBuilded = -1;
 
-		this.noGold = new Audio();
-		this.noGold.volume = 0.3;
-		this.noGold.src = 'sound/ui/humanNoGold.wav';
+		this.noGold = Engine.getSoundFromKey(SOUND_FOLDER_PATHS.UI, UI_SOUNDS.HUMAN_NO_GOLD);
 		this.indexBuildingPlace = 0;
 		this.init();
 	}

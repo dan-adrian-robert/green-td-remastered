@@ -1,14 +1,16 @@
-import {Trap, trapTypes} from "../objects/Trap";
+import {Trap} from "../objects/Trap";
 import {Engine} from "../Engine.";
-import {MousePosition} from "../../types";
+import {MousePosition, TRAP_TYPE, UI_SOUNDS} from "../../types";
 import {Sprite} from "../objects/Sprite";
+import {SOUND_FOLDER_PATHS} from "../../SoundTypes";
+import {TrapTypes} from "../../config/trapConfig";
 
 export class PlaceTrap extends Sprite {
 	buildMenuImage: any;
 	buildImageSize: number;
 	trapPozX: number;
 	trapPozY: number;
-	imagePozList: {pozX: number, pozY: number, sx: number, sy : number, type: any, image: any}[];
+	imagePozList: {pozX: number, pozY: number, sx: number, sy : number, type: TRAP_TYPE, image: any}[];
 	priceList: any[];
 	buildCollisionBox: {x: number, y: number, size: number}[];
 	indexTowerBuilded: number;
@@ -32,19 +34,16 @@ export class PlaceTrap extends Sprite {
 		this.buildCollisionBox = [];
 		this.indexTowerBuilded = -1;
 
-		this.noGold = new Audio();
-		this.noGold.volume = 0.3;
-		this.noGold.src = 'sound/ui/humanNoGold.wav';
-
+		this.noGold = Engine.getSoundFromKey(SOUND_FOLDER_PATHS.UI, UI_SOUNDS.HUMAN_NO_GOLD);
 		this.init();
 	}
 
 	init() {
 		this.imagePozList = [
-			{pozX: 0, pozY: 0, sx: 100, sy : 100, type: null, image: null},
-			{pozX: 0, pozY: 0, sx: 100, sy : 100, type: null, image: null},
-			{pozX: 0, pozY: 0, sx: 100, sy : 100, type: null, image: null},
-			{pozX: 0, pozY: 0, sx: 100, sy : 100, type: null, image: null}
+			{pozX: 0, pozY: 0, sx: 100, sy : 100, type: TRAP_TYPE.MINE, image: null},
+			{pozX: 0, pozY: 0, sx: 100, sy : 100, type: TRAP_TYPE.FIRE, image: null},
+			{pozX: 0, pozY: 0, sx: 100, sy : 100, type: TRAP_TYPE.ICE_SPIKE, image: null},
+			{pozX: 0, pozY: 0, sx: 100, sy : 100, type: TRAP_TYPE.POISON, image: null}
 		];
 
 		this.priceList = [
@@ -74,10 +73,10 @@ export class PlaceTrap extends Sprite {
 		this.imagePozList[1].image = fire;
 		this.imagePozList[2].image = iceSpikes;
 		this.imagePozList[3].image = poison;
-		this.imagePozList[0].type = "mine";
-		this.imagePozList[1].type = "fire";
-		this.imagePozList[2].type = "ice-spikes";
-		this.imagePozList[3].type = "poison";
+		this.imagePozList[0].type = TRAP_TYPE.MINE;
+		this.imagePozList[1].type = TRAP_TYPE.FIRE;
+		this.imagePozList[2].type = TRAP_TYPE.ICE_SPIKE;
+		this.imagePozList[3].type = TRAP_TYPE.POISON;
   }
 
 	updatePozition(mousePos: MousePosition) {
@@ -189,7 +188,7 @@ export class PlaceTrap extends Sprite {
 
 	updatePriceList(): void {
 		for (let i = 0; i < 4; i++) {
-			this.priceList[i].value = trapTypes[this.imagePozList[i].type]["price"];
+			this.priceList[i].value = TrapTypes[this.imagePozList[i].type]["price"];
 		}
 	}
 	buildChosenTrap(index: number, mousePoz: MousePosition, fps : number) {
@@ -199,19 +198,19 @@ export class PlaceTrap extends Sprite {
 
 			switch(index) {
 				case 0:
-					Engine.getTrapList().push(new Trap('mine', 20, this.trapPozX, this.trapPozY, 50, 50));
+					Engine.getTrapList().push(new Trap(TRAP_TYPE.MINE, 20, this.trapPozX, this.trapPozY, 50, 50));
 					break;
 
 				case 1:
-					Engine.getTrapList().push(new Trap('fire', 10, this.trapPozX, this.trapPozY, 50, 50));
+					Engine.getTrapList().push(new Trap(TRAP_TYPE.FIRE, 10, this.trapPozX, this.trapPozY, 50, 50));
 					break;
 
 				case 2:
-					Engine.getTrapList().push(new Trap('ice-spikes', 5, this.trapPozX, this.trapPozY, 50, 50));
+					Engine.getTrapList().push(new Trap(TRAP_TYPE.ICE_SPIKE, 5, this.trapPozX, this.trapPozY, 50, 50));
 					break;
 
 				case 3:
-					Engine.getTrapList().push(new Trap('poison', 5, this.trapPozX, this.trapPozY, 50, 50));
+					Engine.getTrapList().push(new Trap(TRAP_TYPE.POISON, 5, this.trapPozX, this.trapPozY, 50, 50));
 					break;
 			}
 		} else {

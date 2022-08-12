@@ -32,6 +32,34 @@ export enum MOB_TYPE {
     'mage'='mage',
 }
 
+export enum TRAP_TYPE {
+    FIRE = 'FIRE',
+    MINE = 'MINE',
+    POISON = 'POISON',
+    ICE_SPIKE = 'ICE_SPIKE',
+}
+
+export type TRAP_METADATA = {
+    numberOfEnemies: number,
+    price: number,
+    damage: number,
+    range: number,
+    effect: any
+    timeEffect: number,
+    state: string,
+    imageHeight: number,
+    imageWidth: number,
+    spriteHeight: number,
+    spriteWidth: number,
+    animated: boolean,
+    endAnimation: boolean,
+    imageType: any
+}
+
+export type TRAP_CONFIG = {
+    [trap in TRAP_TYPE]: TRAP_METADATA
+}
+
 export type ENEMY_CONFIG = {
     [mob in MOB_TYPE]: {
         hp: number,
@@ -44,7 +72,7 @@ export type ENEMY_CONFIG = {
         sizeX: number,
         sizeY: number,
         gold: number,
-        dieSound: string,
+        dieSound: ENEMY_SOUNDS,
     }
 }
 
@@ -133,3 +161,63 @@ export enum BULLET_EFFECT {
     STUN='STUN',
     POISON='POISON'
 }
+
+export enum ENEMY_SOUNDS {
+    ARCHER= 'archer',
+    DRAGON_DEAD='dragonDeath1',
+    GOBLIN_DEAD='goblinDead',
+    GRIFON='grifon',
+    HUMAN_DEAD='humanDead',
+    KNIGHT_DEAD='knightDead',
+    MAGE='mage',
+    MORTAR_DEAD='mortarDead',
+    OGRE='ogre',
+    ORC_DEAD='orcDead',
+    RIDER_DEAD='riderDead',
+}
+
+export enum AMBIENT_SOUNDS {
+    DEFEATED = 'defeated',
+    NIGHT_ELF = 'nightElf',
+}
+
+export enum SPELL_SOUNDS {
+    THUNDER = 'thunder',
+}
+
+export enum TOWERS_SOUNDS {
+    ARCHER_SHOT = 'archerShoot',
+    CANNON_SHOT ='cannonShoot',
+    TOWER_SHOT ='towerShoot',
+}
+
+export enum UI_SOUNDS {
+    BUTTON_CLICK = 'buttonClick',
+    HUMAN_NO_GOLD = 'humanNoGold',
+    NAGA_NO_GOLD = 'nagaNoGold',
+    ORC_NO_GOLD = 'orcNoGold',
+    RESEARCH_COMPLETE = 'researchComplete',
+    UPGRADE_COMPLETE = 'upgradeCompleted',
+}
+
+export type ENEMY_SOUND_TYPE = {
+    [key in ENEMY_SOUNDS]: any
+}
+
+export type SPELL_SOUND_TYPE = {
+    [key in SPELL_SOUNDS]: any
+}
+
+export type AMBIENT_SOUND_TYPE = {
+    [key in AMBIENT_SOUNDS]: any
+}
+
+export type TOWERS_SOUNDS_TYPE = {
+    [key in TOWERS_SOUNDS]: any
+}
+
+export type UI_SOUNDS_TYPE = {
+    [key in UI_SOUNDS]: any
+}
+
+export type SOUNDS_LIST = ENEMY_SOUNDS | AMBIENT_SOUNDS | SPELL_SOUNDS | TOWERS_SOUNDS | UI_SOUNDS;

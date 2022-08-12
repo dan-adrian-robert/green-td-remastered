@@ -4,7 +4,8 @@
  */
 import {Enemy} from "./Enemy";
 import {Engine} from "../Engine.";
-import {Direction, MOB_TYPE} from "../../types";
+import {Direction, ENEMY_SOUNDS, MOB_TYPE} from "../../types";
+import {SOUND_FOLDER_PATHS} from "../../SoundTypes";
 
 export class LevelSystem {
 	tick: number;
@@ -99,11 +100,13 @@ export class LevelSystem {
 				selectedCP_index = this.spawn[1];
 			}
 
-			Engine.addEnemy(new Enemy(startCp.x, startCp.y, startCp.dir, selectedCP_index, enemyType, hpMult, dmgMult));
+			const dieSound = Engine.getSoundFromKey(SOUND_FOLDER_PATHS.ENEMIES, ENEMY_SOUNDS.HUMAN_DEAD);
+			Engine.addEnemy(new Enemy(startCp.x, startCp.y, startCp.dir, selectedCP_index, enemyType, hpMult, dmgMult, dieSound));
 		} else {
 			const startCp = Engine.getMap().checkPoints[this.spawn[0]];
 			selectedCP_index = this.spawn[0];
-			Engine.addEnemy(new Enemy(startCp.x, startCp.y, startCp.dir, selectedCP_index, enemyType, hpMult, dmgMult));
+			const dieSound = Engine.getSoundFromKey(SOUND_FOLDER_PATHS.ENEMIES, ENEMY_SOUNDS.HUMAN_DEAD);
+			Engine.addEnemy(new Enemy(startCp.x, startCp.y, startCp.dir, selectedCP_index, enemyType, hpMult, dmgMult, dieSound));
 		}
 	};
 
@@ -150,7 +153,8 @@ export class LevelSystem {
 
 		this.tick += 1;
 		if (this.tick === this.fps / this.spawnPerSecond) {
-			 let enemyObject = new Enemy(35, 35, Direction.right, 5, MOB_TYPE.footman, 1, 1);
+			 const dieSound = Engine.getSoundFromKey(SOUND_FOLDER_PATHS.ENEMIES, ENEMY_SOUNDS.HUMAN_DEAD);
+			 let enemyObject = new Enemy(35, 35, Direction.right, 5, MOB_TYPE.footman, 1, 1, dieSound);
 			 Engine.addEnemy(enemyObject);
 		}
 

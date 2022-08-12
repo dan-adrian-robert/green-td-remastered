@@ -20,7 +20,8 @@ import {Coin} from "./objects/Coin";
 import {BuildingPlace} from "./objects/BuildingPlace";
 import {Kamikaze} from "./objects/Kamikaze";
 import {BulletSystem} from "./systems/BulletSystem";
-import {GAME_SOUND_FORMAT} from "../SoundTypes";
+import {GAME_SOUND_FORMAT, SOUND_FOLDER_PATHS} from "../SoundTypes";
+import {AMBIENT_SOUNDS, SOUNDS_LIST, UI_SOUNDS} from "../types";
 
 export namespace Engine {
     let imageMap: GAME_ASSET_FORMAT;
@@ -39,7 +40,7 @@ export namespace Engine {
     let menu: Menu;
     let sound: Sound;
     let spell: Spell;
-    let gameState: GameState = new GameState();
+    let gameState: GameState;
     let base: Base;
     let map: GameMap;
 
@@ -365,6 +366,10 @@ export namespace Engine {
         return soundMap;
     }
 
+    export const getSoundFromKey = (folderPath: SOUND_FOLDER_PATHS, key: SOUNDS_LIST): any => {
+        return (getSoundMap()[folderPath] as any)[key];
+    }
+
     export const applyEnemyLogic = () => {
        Engine.setEnemyList(listEnemy.map((enemy: Enemy) => {
             enemy.collideWithCheckPoint(map);
@@ -378,4 +383,12 @@ export namespace Engine {
             return enemy;
         }))
     }
+
+    // gameState = new GameState(
+    //     getSoundFromKey(SOUND_FOLDER_PATHS.UI, UI_SOUNDS.BUTTON_CLICK),
+    //     getSoundFromKey(SOUND_FOLDER_PATHS.AMBIENT, AMBIENT_SOUNDS.NIGHT_ELF),
+    //     getSoundFromKey(SOUND_FOLDER_PATHS.AMBIENT, AMBIENT_SOUNDS.DEFEATED),
+    // );
+
+    gameState = new GameState({},{},{});
 }
