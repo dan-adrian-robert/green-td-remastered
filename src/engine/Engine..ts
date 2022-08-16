@@ -11,7 +11,7 @@ import {GameMap} from "./objects/GameMap";
 import {UpgradeTower} from "./ui/UpgradeTower";
 import {BuildSystem} from "./ui/BuildSystem";
 import {PlaceTrap} from "./ui/PlaceTrap";
-import {LevelSystem} from "./objects/LevelSystem";
+import {LevelSystem} from "./systems/LevelSystem";
 import {Level} from "./objects/Level";
 import {Bullet} from "./objects/Bullet";
 import {GAME_ASSET_FORMAT} from "../imageTypes";
@@ -22,6 +22,8 @@ import {Kamikaze} from "./objects/Kamikaze";
 import {BulletSystem} from "./systems/BulletSystem";
 import {GAME_SOUND_FORMAT, SOUND_FOLDER_PATHS} from "../SoundTypes";
 import {AMBIENT_SOUNDS, SOUNDS_LIST, UI_SOUNDS} from "../types";
+import {TowerSystem} from "./systems/TowerSystem";
+import {EnemySystem} from "./systems/EnemySystem";
 
 export namespace Engine {
     let imageMap: GAME_ASSET_FORMAT;
@@ -34,7 +36,7 @@ export namespace Engine {
     let listBullets : Bullet[] = [];
     let listBox: BuildingPlace[] = [];
     let listTowers: Tower[] = [];
-    let staticLevels: any[];
+    let staticLevels: Level[] = [];
 
     let border: Border;
     let menu: Menu;
@@ -61,8 +63,8 @@ export namespace Engine {
     //DEBUGGER
     let renderCollision: boolean = false;
 
-    let towerSystem: Tower;
-    let enemySystem: Enemy;
+    let towerSystem: TowerSystem;
+    let enemySystem: EnemySystem;
     let bulletSystem: BulletSystem;
 
     export const toggleRenderRange = () => {
@@ -77,19 +79,19 @@ export namespace Engine {
         bulletSystem = newBulletSystem;
     }
 
-    export const getEnemySystem = (): Enemy => {
+    export const getEnemySystem = (): EnemySystem => {
         return enemySystem;
     }
 
-    export const setEnemySystem = (newEnemySystem: Enemy): void => {
+    export const setEnemySystem = (newEnemySystem: EnemySystem): void => {
         enemySystem = newEnemySystem;
     }
 
-    export const getTowerSystem = (): Tower => {
+    export const getTowerSystem = (): TowerSystem => {
         return towerSystem;
     }
 
-    export const setTowerSystem = (newTowerSystem: Tower): void => {
+    export const setTowerSystem = (newTowerSystem: TowerSystem): void => {
         towerSystem = newTowerSystem;
     }
 
@@ -146,11 +148,11 @@ export namespace Engine {
         canvas = newCanvas;
     }
 
-    export const getStaticLevels= (): any[] => {
+    export const getStaticLevels= (): Level[] => {
         return staticLevels;
     }
 
-    export const setStaticLevels= (newStaticLevels: any[]): void => {
+    export const setStaticLevels= (newStaticLevels: Level[]): void => {
         staticLevels = newStaticLevels;
     }
 
@@ -368,20 +370,6 @@ export namespace Engine {
 
     export const getSoundFromKey = (folderPath: SOUND_FOLDER_PATHS, key: SOUNDS_LIST): any => {
         return (getSoundMap()[folderPath] as any)[key];
-    }
-
-    export const applyEnemyLogic = () => {
-       Engine.setEnemyList(listEnemy.map((enemy: Enemy) => {
-            enemy.collideWithCheckPoint(map);
-            enemy.move();
-            // enemy.applyDebuffs();
-            // enemy.tick_debuffs();
-            // enemy.updateSprite();
-            enemy.hp.updatePosition(enemy);
-            enemy.render();
-            enemy.hp.render();
-            return enemy;
-        }))
     }
 
     // gameState = new GameState(

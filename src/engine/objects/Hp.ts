@@ -10,20 +10,15 @@ export class Hp {
 	value: number;
 
 	constructor(px: number, py: number, sizeX: number, sizeY:number, value: number) {
-		//position
 		this.pozX = px;
 		this.pozY = py;
-
-		//size
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
 
 		//the size of 1 hp
-		this.hpSize = Math.floor(sizeX / value) === 0? Math.ceil(sizeX / value)/10: Math.floor(sizeX / value);
+		this.hpSize = Math.floor(sizeX / value) === 0 ? Math.ceil(sizeX / value) / 10 : Math.floor(sizeX / value);
 
-		//the current hp
 		this.value = value;
-
 	}
 
 	render(): void {

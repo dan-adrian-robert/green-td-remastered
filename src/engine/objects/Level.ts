@@ -1,4 +1,4 @@
-import {GameTypes} from "../../types";
+import {GameTypes, MOB_TYPE} from "../../types";
 
 const randomIntFromInterval = (min:number,max: number) => {
 	return Math.floor(Math.random()*(max-min+1)+min);
@@ -9,12 +9,12 @@ export class Level {
 	level: number;
 	multiplier: number;
 	numberEnemies: number;
-	typeEnemies: string[];
+	typeEnemies: MOB_TYPE[];
 	spawnPoints: any;
-	enemyList: any[];
+	enemyList: MOB_TYPE[];
 	bossLVL: any;
 
-	constructor(numLevel: number, difficulty:any, numberEnemies: number, typeEnemies: string[], isBoss: any, spawnPoints: any) {
+	constructor(numLevel: number, difficulty:any, numberEnemies: number, typeEnemies: MOB_TYPE[], isBoss: any, spawnPoints: any) {
 		if( difficulty === GameTypes.Easy ) {
 			this.difficulty = 1;
 		}

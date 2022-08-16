@@ -1,22 +1,18 @@
-/**
- * @description LevelSystem Constructor
- * @param {*} fps number of frames per second
- */
-import {Enemy} from "./Enemy";
+import {Enemy} from "../objects/Enemy";
 import {Engine} from "../Engine.";
 import {Direction, ENEMY_SOUNDS, MOB_TYPE} from "../../types";
 import {SOUND_FOLDER_PATHS} from "../../SoundTypes";
+import {Level} from "../objects/Level";
 
 export class LevelSystem {
 	tick: number;
 	spawnPerSecond: number;
 	fps: number;
-	justSet: boolean;
-	levels: any;
+	levels: Level[];
 	currentLVL: number;
-	lvl: any;
-	enemies: any;
-	spawn: any;
+	lvl: Level;
+	enemies: MOB_TYPE[];
+	spawn: number[];
 
 	specialLevelTypes: any[];
 	tick_between_levels: number;
@@ -27,22 +23,21 @@ export class LevelSystem {
 	protect_change: boolean;
 	alternateSpawn: boolean;
 
-	constructor(fps: number) {
+	constructor(fps: number, levels: Level[]) {
 		// used for spawns/sec
 		this.tick = 0;
 		this.spawnPerSecond = 1;
 		this.fps = fps;
-		// if it's not the first lvl
-		this.justSet = false;
 
+		this.levels = levels;
+		this.currentLVL = 1;
+		this.lvl = this.levels[0];
 
-		this.levels = null;
-		// currentLVL will keep the lvl number only
-		this.currentLVL = 0;
-		this.lvl = null;
-		this.enemies = null;
-		// will take the array of spawnpoints from the current parsed lvl
-		this.spawn = null;
+		this.levels.splice(0, 1);
+		console.log(this.lvl);
+		console.log(this.lvl);
+		this.enemies = this.lvl.enemyList;
+		this.spawn = this.lvl.spawnPoints;
 
 		// time between levels
 		this.tick_between_levels = 5;
@@ -65,8 +60,6 @@ export class LevelSystem {
 		// saves the static ten levels and is updated when specialLevelTypes is involved
 		this.lastTenLevels = [];
 		this.protect_change = false;
-
-		// if needed to alternate spawnPoint
 		this.alternateSpawn = false;
 	}
 
@@ -74,8 +67,8 @@ export class LevelSystem {
 		const enemyType = this.enemies[0];
 		this.enemies.splice(0, 1);
 
-		const difficulty = this.lvl.difficulty;
-		var hpMult, dmgMult;
+		const difficulty = this.lvl?.difficulty;
+		let hpMult, dmgMult;
 
 		// handle different difficulty
 		if (difficulty === 3) {
@@ -87,7 +80,8 @@ export class LevelSystem {
 		}
 
 		// handle multiple spawnPoints
-		var selectedCP_index;
+		let selectedCP_index;
+		const activeEffects = Engine.getEnemySystem().getDefaultActiveEffectsConfig();
 		if (this.spawn.length > 1) {
 			let startCp
 			if (!this.alternateSpawn) {
@@ -101,12 +95,12 @@ export class LevelSystem {
 			}
 
 			const dieSound = Engine.getSoundFromKey(SOUND_FOLDER_PATHS.ENEMIES, ENEMY_SOUNDS.HUMAN_DEAD);
-			Engine.addEnemy(new Enemy(startCp.x, startCp.y, startCp.dir, selectedCP_index, enemyType, hpMult, dmgMult, dieSound));
+			Engine.addEnemy(new Enemy(startCp.x, startCp.y, startCp.dir, selectedCP_index, enemyType, hpMult, dmgMult, dieSound, activeEffects));
 		} else {
 			const startCp = Engine.getMap().checkPoints[this.spawn[0]];
 			selectedCP_index = this.spawn[0];
 			const dieSound = Engine.getSoundFromKey(SOUND_FOLDER_PATHS.ENEMIES, ENEMY_SOUNDS.HUMAN_DEAD);
-			Engine.addEnemy(new Enemy(startCp.x, startCp.y, startCp.dir, selectedCP_index, enemyType, hpMult, dmgMult, dieSound));
+			Engine.addEnemy(new Enemy(startCp.x, startCp.y, startCp.dir, selectedCP_index, enemyType, hpMult, dmgMult, dieSound, activeEffects));
 		}
 	};
 
@@ -135,26 +129,15 @@ export class LevelSystem {
 			}
 		}
 	};
-	
+
 	// main function for spawning enemies
 	spawnEnemy() {
-		// if it's first level
-		if (!this.justSet) {
-			this.levels = Array.from(Engine.getStaticLevels());
-			this.currentLVL = 1;
-			this.lastTenLevels = Array.from(this.levels);
-			
-			this.lvl = this.levels[this.currentLVL - 1];
-			this.levels.splice(0, 1);
-			this.enemies = Array.from(this.lvl.enemyList);
-			this.spawn = Array.from(this.lvl.spawnPoints);
-			this.justSet = true;
-		}
-
 		this.tick += 1;
+
 		if (this.tick === this.fps / this.spawnPerSecond) {
+			 const startCp = Engine.getMap().checkPoints[this.spawn[1]];
 			 const dieSound = Engine.getSoundFromKey(SOUND_FOLDER_PATHS.ENEMIES, ENEMY_SOUNDS.HUMAN_DEAD);
-			 let enemyObject = new Enemy(35, 35, Direction.right, 5, MOB_TYPE.footman, 1, 1, dieSound);
+			 let enemyObject = new Enemy(startCp.x, startCp.y, Direction.right, 5, MOB_TYPE.footman, 1, 1, dieSound,  Engine.getEnemySystem().getDefaultActiveEffectsConfig());
 			 Engine.addEnemy(enemyObject);
 		}
 
@@ -193,7 +176,7 @@ export class LevelSystem {
 		}
 	}
 
-	addSpecialLevel() {
+	addSpecialLevel(): void {
 		let lvlType;
 		if (this.specialLevelTypes.length > 0) {
 			lvlType = this.specialLevelTypes[0];

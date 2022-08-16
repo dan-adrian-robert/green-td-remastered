@@ -1,11 +1,11 @@
 import {Engine} from "../Engine.";
 import {Sprite} from "./Sprite";
-import {BULLET_EFFECT} from "../../types";
+import {EFFECT} from "../../types";
 
 export class Bullet extends Sprite {
 	angle: number;
 	speed: number;
-	effect: BULLET_EFFECT;
+	effect: EFFECT;
 	effectDuration: number;
 	dmg: number;
 	centerX: number;
@@ -15,7 +15,7 @@ export class Bullet extends Sprite {
 	ticks: number;
 
 	constructor(image: any, spSizeX:number, spSizeY: number, sizeX: number, sizeY: number, px:number,
-				py: number, angle: number, speed: number, dmg: number, range: number, effect: BULLET_EFFECT,
+				py: number, angle: number, speed: number, dmg: number, range: number, effect: EFFECT,
 				effectDuration: number) {
 
 		super(image, 0, 0, spSizeX, spSizeY, px, py, sizeX, sizeY);

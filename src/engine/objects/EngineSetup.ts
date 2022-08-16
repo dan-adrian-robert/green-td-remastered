@@ -14,18 +14,17 @@ import {GameMap} from "./GameMap";
 import {CheckPoint} from "./CheckPoint";
 import {Base} from "./Base";
 import {Hp} from "./Hp";
-import {LevelSystem} from "./LevelSystem";
+import {LevelSystem} from "../systems/LevelSystem";
 import {CANVAS, FPS} from "../../config/globals";
 import {Level} from "./Level";
 import {FOLDER_PATHS} from "../../imageTypes";
 import {Coin} from "./Coin";
-import {Enemy} from "./Enemy";
-import {Tower} from "./Tower";
-import {Direction, ENEMY_SOUNDS, MOB_TYPE, SOUNDS_LIST, SPELL_SOUNDS, TOWER_TYPE} from "../../types";
+import {Direction, MOB_TYPE, SPELL_SOUNDS} from "../../types";
 import {BulletSystem} from "../systems/BulletSystem";
-import {GAME_SOUND_FORMAT, SOUND_FOLDER_PATHS} from "../../SoundTypes";
+import {GAME_SOUND_FORMAT} from "../../SoundTypes";
 import {buildSoundMap} from "../../Sounds";
-import {enemyTypes} from "../../config/enemyConfig";
+import {TowerSystem} from "../systems/TowerSystem";
+import {EnemySystem} from "../systems/EnemySystem";
 
 export const setupGame = () => {
     const imageMap = buildImageMap();
@@ -59,23 +58,17 @@ export const setupGame = () => {
         300, 200, SPELL_SOUNDS.THUNDER);
     Engine.setSpell(spell);
 
-
-    Engine.setLvlSystem(new LevelSystem(FPS));
-    Engine.setLevel(new Level(1, "Easy", 10, ['footman', 'grunt'], 1, 0));
+    Engine.setLevel(new Level(1, "Easy", 10, [MOB_TYPE.footman, MOB_TYPE.orcGrunt], 1, 0));
 
     initWorld();
     setGameLoop();
+    Engine.setLvlSystem(new LevelSystem(FPS,[new Level(1,1, 6, [MOB_TYPE.footman], false, 0)]));
 
     Engine.setCoin(new Coin(imageMap[FOLDER_PATHS.UI].goldCoin, 14, 14, 15, 14, 950, 43));
 
-    const dieSound = Engine.getSoundFromKey(SOUND_FOLDER_PATHS.ENEMIES, ENEMY_SOUNDS.HUMAN_DEAD);
-    const enemyObject = new Enemy(35, 35, Direction.right,5, MOB_TYPE.footman, 1, 1, dieSound);
-    Engine.setEnemySystem(enemyObject);
-
-    const towerObject = new Tower(TOWER_TYPE.CANNON, 5, 0, 0, 45, 55, 50);
-    Engine.setTowerSystem(towerObject);
-
+    Engine.setEnemySystem(new EnemySystem());
     Engine.setBulletSystem(new BulletSystem());
+    Engine.setTowerSystem(new TowerSystem());
 
     // let allyObject = new Kamikaze(620, 220, 'left', 8);
     // let trapObject = new Trap('mine', 5, 0, 0, 45, 45);

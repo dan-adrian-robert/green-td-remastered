@@ -1,4 +1,4 @@
-import {BULLET_EFFECT, BULLET_TYPE, BulletConfig} from "../types";
+import {BULLET_TYPE, BulletConfig, EFFECT} from "../types";
 import {Engine} from "../engine/Engine.";
 import {FOLDER_PATHS} from "../imageTypes";
 
@@ -6,31 +6,31 @@ export const bulletTypes: BulletConfig = {
     [BULLET_TYPE.FIRE]: {
         "bullet-speed": 15,
         damage: 12,
-        effect: BULLET_EFFECT.BURN,
+        effect: EFFECT.BURN,
         "time-effect": 8,
     },
     [BULLET_TYPE.FROST]: {
         "bullet-speed": 10,
         damage: 10,
-        effect: BULLET_EFFECT.SLOW,
+        effect: EFFECT.SLOW,
         "time-effect": 3,
     },
     [BULLET_TYPE.POISON]: {
         "bullet-speed": 20,
         damage: 8,
-        effect: BULLET_EFFECT.POISON,
+        effect: EFFECT.POISON,
         "time-effect": 2,
     },
     [BULLET_TYPE.CANNON]: {
         "bullet-speed": 15,
         damage: 15,
-        effect: BULLET_EFFECT.NONE,
+        effect: EFFECT.NONE,
         "time-effect": 0,
     },
     [BULLET_TYPE.BOULDER]: {
         "bullet-speed": 20,
         damage: 10,
-        effect: BULLET_EFFECT.STUN,
+        effect: EFFECT.STUN,
         "time-effect": 2,
     }
 };
