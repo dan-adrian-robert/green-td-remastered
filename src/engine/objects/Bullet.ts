@@ -1,6 +1,6 @@
 import {Engine} from "../Engine.";
 import {Sprite} from "./Sprite";
-import {BULLET_EFFECT} from "../../types";
+import {BULLET_EFFECT} from "../../types/types";
 
 export class Bullet extends Sprite {
 	angle: number;

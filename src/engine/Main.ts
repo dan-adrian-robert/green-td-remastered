@@ -1,4 +1,4 @@
-import {FPS} from "../config/globals";
+import {FPS} from "../config/Globals";
 import {Engine} from "./Engine.";
 import {renderLevel, renderMoney, renderObjectList} from "./Render";
 import {collideBulletsEnemies, collideEnemiesBase, eraseEnemies} from "./UserActions";
@@ -54,7 +54,7 @@ export const gameLoop = () => {
         //
         //
         // //Level____________________________________________
-        Engine.getLvlSystem().spawnEnemy();
+        Engine.getLvlSystem().applyLogic();
         //
         // //LevelSystem.spawnAlly();
         renderMoney();
@@ -88,7 +88,6 @@ export const gameLoop = () => {
         Engine.getBorder().renderInMenu();
         Engine.getMenu().renderGameOverMenu();
         Engine.setStaticLevels([]);
-        Engine.getLvlSystem().justSet = false;
     }
 }
 

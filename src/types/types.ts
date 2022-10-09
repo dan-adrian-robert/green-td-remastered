@@ -19,6 +19,12 @@ export enum GAME_STATE {
     'Difficulty'='Difficulty'
 }
 
+export enum LEVEL_SYSTEM_STATE {
+    'BEFORE_LEVELS'='BEFORE_LEVELS',
+    'LEVEL_STARTED'='LEVEL_STARTED',
+    'BETWEEN_LEVELS'='BETWEEN_LEVELS',
+}
+
 export enum MOB_TYPE {
     'demolitionSquad' = 'demolitionSquad',
     'footman'='footman',

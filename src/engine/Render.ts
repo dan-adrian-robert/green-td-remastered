@@ -9,7 +9,7 @@ export const renderMoney = () => {
 export const renderLevel = () => {
 	Engine.getCanvasContext().fillStyle = "blue";
 	Engine.getCanvasContext().font = "25px Arial";
-	Engine.getCanvasContext().fillText("Level: " + Engine.getLvlSystem().currentLVL, 800, 120);
+	Engine.getCanvasContext().fillText(Engine.getLvlSystem().getCurrentLevelText(), 800, 120);
 	Engine.getCanvasContext().fillStyle = "yellow";
 }
 

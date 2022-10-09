@@ -9,25 +9,25 @@ import {GameState} from "./ui/GameState";
 import {Base} from "./objects/Base";
 import {GameMap} from "./objects/GameMap";
 import {UpgradeTower} from "./ui/UpgradeTower";
-import {BuildSystem} from "./ui/BuildSystem";
+import {BuildSystem} from "./systems/BuildSystem";
 import {PlaceTrap} from "./ui/PlaceTrap";
-import {LevelSystem} from "./objects/LevelSystem";
+import {LevelSystem} from "./systems/LevelSystem";
 import {Level} from "./objects/Level";
 import {Bullet} from "./objects/Bullet";
-import {GAME_ASSET_FORMAT} from "../imageTypes";
-import {CANVAS} from "../config/globals";
+import {GAME_ASSET_FORMAT} from "../types/imageTypes";
+import {CANVAS} from "../config/Globals";
 import {Coin} from "./objects/Coin";
 import {BuildingPlace} from "./objects/BuildingPlace";
 import {Kamikaze} from "./objects/Kamikaze";
 import {BulletSystem} from "./systems/BulletSystem";
-import {GAME_SOUND_FORMAT, SOUND_FOLDER_PATHS} from "../SoundTypes";
-import {AMBIENT_SOUNDS, SOUNDS_LIST, UI_SOUNDS} from "../types";
+import {GAME_SOUND_FORMAT, SOUND_FOLDER_PATHS} from "../types/SoundTypes";
+import {SOUNDS_LIST} from "../types/types";
 
 export namespace Engine {
     let imageMap: GAME_ASSET_FORMAT;
     let soundMap: GAME_SOUND_FORMAT;
 
-    let sumOfMoney = 900;
+    let sumOfMoney: number = 900;
     let listEnemy: Enemy[] = [];
     let listAlly: Kamikaze[] = [];
     let listTraps: Trap[] = [];
@@ -64,6 +64,8 @@ export namespace Engine {
     let towerSystem: Tower;
     let enemySystem: Enemy;
     let bulletSystem: BulletSystem;
+
+    gameState = new GameState({},{},{});
 
     export const toggleRenderRange = () => {
         gameState.renderRange = !gameState.renderRange;
@@ -109,7 +111,6 @@ export namespace Engine {
         return coin;
     }
 
-
     export const clearCanvas = () => {
         Engine.getCanvasContext().clearRect(0, 0, CANVAS.width, CANVAS.height);
     }
@@ -146,11 +147,11 @@ export namespace Engine {
         canvas = newCanvas;
     }
 
-    export const getStaticLevels= (): any[] => {
+    export const getStaticLevels= (): Level[] => {
         return staticLevels;
     }
 
-    export const setStaticLevels= (newStaticLevels: any[]): void => {
+    export const setStaticLevels= (newStaticLevels: Level[]): void => {
         staticLevels = newStaticLevels;
     }
 
@@ -222,7 +223,7 @@ export namespace Engine {
         return spell;
     }
 
-    export const setSpell = (newSpell: Spell) => {
+    export const setSpell = (newSpell: Spell): void => {
         spell = newSpell;
     }
 
@@ -238,28 +239,30 @@ export namespace Engine {
         return menu;
     }
 
-    export const setMenu= (newMenu: Menu) => {
+    export const setMenu= (newMenu: Menu): void => {
         menu = newMenu;
     }
 
     export const getMoney = (): number => {
         return sumOfMoney;
     }
+
     export const setMoney = (value: number): void => {
         sumOfMoney = value;
     }
     export const addMoney = (value: number): void => {
         sumOfMoney += value;
     }
+
     export const decreaseMoney = (value: number): void => {
         sumOfMoney -= value;
     }
 
-    export const getEnemyList = () => {
+    export const getEnemyList = (): Enemy[] => {
         return listEnemy;
     }
 
-    export const setEnemyList = (list: any[]) => {
+    export const setEnemyList = (list: Enemy[]) => {
         listEnemy = list;
     }
 
@@ -279,11 +282,11 @@ export namespace Engine {
         listAlly.push(ally);
     }
 
-    export const getTrapList = () => {
+    export const getTrapList = (): Trap[]  => {
         return listTraps;
     }
 
-    export const setTrapList = (list: any[]) => {
+    export const setTrapList = (list: Trap[]): void => {
         listTraps = list;
     }
 
@@ -311,7 +314,7 @@ export namespace Engine {
         listBox = list;
     }
 
-    export const addBox = (box:any): void => {
+    export const addBox = (box: BuildingPlace): void => {
         listBox.push(box);
     }
 
@@ -327,11 +330,11 @@ export namespace Engine {
         listTowers = list;
     }
 
-    export const removeTower = () => {
+    export const removeTower = (): void => {
 
     }
 
-    export const addTower = (tower: Tower) => {
+    export const addTower = (tower: Tower): void => {
         listTowers.push(tower);
     }
 
@@ -370,25 +373,17 @@ export namespace Engine {
         return (getSoundMap()[folderPath] as any)[key];
     }
 
-    export const applyEnemyLogic = () => {
+    export const applyEnemyLogic = (): void => {
        Engine.setEnemyList(listEnemy.map((enemy: Enemy) => {
             enemy.collideWithCheckPoint(map);
             enemy.move();
             // enemy.applyDebuffs();
             // enemy.tick_debuffs();
-            // enemy.updateSprite();
+            enemy.updateSprite();
             enemy.hp.updatePosition(enemy);
             enemy.render();
             enemy.hp.render();
             return enemy;
         }))
     }
-
-    // gameState = new GameState(
-    //     getSoundFromKey(SOUND_FOLDER_PATHS.UI, UI_SOUNDS.BUTTON_CLICK),
-    //     getSoundFromKey(SOUND_FOLDER_PATHS.AMBIENT, AMBIENT_SOUNDS.NIGHT_ELF),
-    //     getSoundFromKey(SOUND_FOLDER_PATHS.AMBIENT, AMBIENT_SOUNDS.DEFEATED),
-    // );
-
-    gameState = new GameState({},{},{});
 }

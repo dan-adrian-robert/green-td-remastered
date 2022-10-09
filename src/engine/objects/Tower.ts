@@ -1,11 +1,11 @@
 import {Bullet} from "./Bullet";
 import {Engine} from "../Engine.";
 import {Enemy} from "./Enemy";
-import {BULLET_TYPE, TOWER_TYPE, UPGRADE_TYPE, UpgradeMetaData} from "../../types";
+import {BULLET_TYPE, TOWER_TYPE, UPGRADE_TYPE, UpgradeMetaData} from "../../types/types";
 import {Sprite} from "./Sprite";
-import {bulletTypes, getBulletImage} from "../../config/bulletConfig";
-import {getTowerImage, towerTypes} from "../../config/towerConfig";
-import {SOUND_FOLDER_PATHS} from "../../SoundTypes";
+import {bulletTypes, getBulletImage} from "../../config/Bulltes";
+import {getTowerImage, towerTypes} from "../../config/Towers";
+import {SOUND_FOLDER_PATHS} from "../../types/SoundTypes";
 
 export class Tower extends Sprite {
 	towerType: TOWER_TYPE;
@@ -58,7 +58,6 @@ export class Tower extends Sprite {
 		this.rangeImage.src = ('images/ui/range.png');
 
 		this.fireSound = Engine.getSoundMap()[SOUND_FOLDER_PATHS.TOWERS].towerShoot;
-		console.log(this.fireSound);
 
 		this.upgradeTypes = [
 			{type: UPGRADE_TYPE.RANGE, price: 25, cost:17, value: 10, lvl:1, maxLvl:10},

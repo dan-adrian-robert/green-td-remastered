@@ -1,7 +1,7 @@
 import {Level} from "../objects/Level";
-import {AMBIENT_SOUNDS, GameTypes, MOB_TYPE, UI_SOUNDS} from "../../types";
+import {GameTypes} from "../../types/types";
 import {Engine} from "../Engine.";
-import {SOUND_FOLDER_PATHS} from "../../SoundTypes";
+import {LEVELS_CONFIG} from "../../config/Level";
 
 export class GameState {
 	states: any[];
@@ -34,6 +34,17 @@ export class GameState {
 		this.menuState();
 	}
 
+	setLevels(difficulty:GameTypes): void {
+		const staticLevels: Level[] = [];
+
+		LEVELS_CONFIG.map((levelConfig) => {
+			const {numLevel, numberEnemies, typeEnemies, isBoss, spawnPoints}= levelConfig;
+			staticLevels.push(new Level(numLevel, difficulty, numberEnemies, typeEnemies, isBoss, spawnPoints));
+		})
+
+		Engine.setStaticLevels(staticLevels);
+	}
+
 	startGame (): void {
 		let difficulty = Engine.getMenu().getCurrentDifficulty();
 
@@ -41,18 +52,9 @@ export class GameState {
 			difficulty = GameTypes.Easy;
 		}
 
-		const staticLevels = [];
-		staticLevels.push(new Level(1, difficulty, 6, [MOB_TYPE.footman], false, 0));
-		staticLevels.push(new Level(2, difficulty, 7, [MOB_TYPE.orcGrunt], false, 0));
-		staticLevels.push(new Level(3, difficulty, 5, [MOB_TYPE.demolitionSquad], false, 0));
-		staticLevels.push(new Level(4, difficulty, 8, [MOB_TYPE.knight], false, 0));
-		staticLevels.push(new Level(5, difficulty, 1, [MOB_TYPE.dragon], true, 0));
-		staticLevels.push(new Level(6, difficulty, 8, [MOB_TYPE.mage], false, 0));
-		staticLevels.push(new Level(7, difficulty, 10, [MOB_TYPE.orcRider], false, 0));
-		staticLevels.push(new Level(8, difficulty, 12, [MOB_TYPE.gryphon], false, 0));
-		staticLevels.push(new Level(9, difficulty, 10, [MOB_TYPE.archer], false, 0));
-		staticLevels.push(new Level(10, difficulty, 1, [MOB_TYPE.ogre], true, 0));
-		Engine.setStaticLevels(staticLevels);
+		console.log('test levels',difficulty);
+		this.setLevels(difficulty);
+
 		this.stateSelected = 1;
 	};
 

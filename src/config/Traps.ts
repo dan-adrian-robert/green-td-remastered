@@ -1,5 +1,5 @@
-import {TRAP_CONFIG, TRAP_METADATA, TRAP_TYPE} from "../types";
-import {FOLDER_PATHS, GAME_ASSET_FORMAT} from "../imageTypes";
+import {TRAP_CONFIG, TRAP_METADATA, TRAP_TYPE} from "../types/types";
+import {FOLDER_PATHS, GAME_ASSET_FORMAT} from "../types/imageTypes";
 
 export const TrapTypes: TRAP_CONFIG = {
     [TRAP_TYPE.FIRE]: {

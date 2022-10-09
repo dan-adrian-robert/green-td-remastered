@@ -1,6 +1,6 @@
 import {Engine} from "../Engine.";
-import {SOUND_FOLDER_PATHS} from "../../SoundTypes";
-import {SPELL_SOUNDS} from "../../types";
+import {SOUND_FOLDER_PATHS} from "../../types/SoundTypes";
+import {SPELL_SOUNDS} from "../../types/types";
 
 export class Spell {
 

@@ -1,4 +1,4 @@
-import {GAME_SOUND_FORMAT, SOUND_FOLDER_PATHS} from "./SoundTypes";
+import {GAME_SOUND_FORMAT, SOUND_FOLDER_PATHS} from "../types/SoundTypes";
 
 export const BASE_ROUTE_SOUND: string = './assets/sound';
 

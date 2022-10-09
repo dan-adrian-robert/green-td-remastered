@@ -1,14 +1,15 @@
 import React, {useEffect} from 'react';
 import './App.css';
-import {CANVAS} from "./config/globals";
+import {CANVAS} from "./config/Globals";
 import './engine/Main';
 import {Engine} from "./engine/Engine.";
 import {setupGame} from "./engine/objects/EngineSetup";
 import {Button, Stack} from "@mui/material";
 import { goTo, toggleCollisionRender } from "./engine/Debugger";
-import {GAME_STATE} from "./types";
+import {GAME_STATE} from "./types/types";
 
-function App() {
+
+const App = () => {
     const canvasRef = React.useRef(null);
 
     useEffect(() => {
@@ -22,7 +23,7 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <Stack spacing={2} direction="row" style={{marginBottom: '10px'}}>
+                <Stack spacing={2} direction="row">
                     <Button variant="contained" onClick={()=>goTo(GAME_STATE.Menu)}>Go to menu</Button>
                     <Button variant="contained" onClick={()=>goTo(GAME_STATE.GamePlay)}>Go to game</Button>
                     <Button variant="contained" onClick={()=>goTo(GAME_STATE.GameOver)}>Go to game over</Button>

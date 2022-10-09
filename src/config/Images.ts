@@ -1,4 +1,4 @@
-import {FOLDER_PATHS, GAME_ASSET_FORMAT} from "./imageTypes";
+import {FOLDER_PATHS, GAME_ASSET_FORMAT} from "../types/imageTypes";
 
 export const BASE_ROUTE: string = './assets/images';
 export const IMAGE_MAP: GAME_ASSET_FORMAT = {
@@ -136,6 +136,39 @@ export const buildImageMap= () : GAME_ASSET_FORMAT => {
     const footman = new Image();
     footman.src = IMAGE_MAP.MOBS.footman;
 
+    const grunt = new Image();
+    grunt.src = IMAGE_MAP.MOBS.grunt;
+
+    const grifon = new Image();
+    grifon.src = IMAGE_MAP.MOBS.grifon;
+
+    const knight = new Image();
+    knight.src = IMAGE_MAP.MOBS.knight;
+
+    const mage = new Image();
+    mage.src = IMAGE_MAP.MOBS.mage;
+
+    const ogre = new Image();
+    ogre.src = IMAGE_MAP.MOBS.ogre;
+
+    const rider = new Image();
+    rider.src = IMAGE_MAP.MOBS.rider;
+
+    const spider = new Image();
+    spider.src = IMAGE_MAP.MOBS.spider;
+
+    const spiderCrop = new Image();
+    spiderCrop.src = IMAGE_MAP.MOBS.spiderCrop;
+
+    const dwarvenDemolitionSquad = new Image();
+    dwarvenDemolitionSquad.src = IMAGE_MAP.MOBS.dwarvenDemolitionSquad;
+
+    const archer = new Image();
+    archer.src = IMAGE_MAP.MOBS.archer;
+
+    const dragonBoss = new Image();
+    dragonBoss.src = IMAGE_MAP.MOBS.dragonBoss;
+
     const tx = 90;
     const ty = 110;
     const boulderTower = new Image(tx, ty);
@@ -229,18 +262,18 @@ export const buildImageMap= () : GAME_ASSET_FORMAT => {
             map,
         },
         [FOLDER_PATHS.MOBS]: {
-            archer: {},
-            dragonBoss: {},
-            dwarvenDemolitionSquad: {},
+            archer,
+            dragonBoss,
+            dwarvenDemolitionSquad,
             footman,
-            grifon: {},
-            grunt: {},
-            knight:  {},
-            mage:  {},
-            ogre: {},
-            rider: {},
-            spider: {},
-            spiderCrop: {},
+            grifon,
+            grunt,
+            knight,
+            mage,
+            ogre,
+            rider,
+            spider,
+            spiderCrop,
         },
         [FOLDER_PATHS.SOUND]: {
             sound,

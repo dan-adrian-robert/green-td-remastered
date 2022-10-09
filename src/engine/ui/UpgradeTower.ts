@@ -1,8 +1,8 @@
 import {Engine} from "../Engine.";
-import {FOLDER_PATHS} from "../../imageTypes";
-import {ImageMetaData, UI_SOUNDS} from "../../types";
+import {FOLDER_PATHS} from "../../types/imageTypes";
+import {ImageMetaData, UI_SOUNDS} from "../../types/types";
 import {Tower} from "../objects/Tower";
-import {SOUND_FOLDER_PATHS} from "../../SoundTypes";
+import {SOUND_FOLDER_PATHS} from "../../types/SoundTypes";
 
 export class UpgradeTower {
 	upMenuImage: any;

@@ -1,4 +1,4 @@
-import {GAME_STATE} from "../types";
+import {GAME_STATE} from "../types/types";
 import {Engine} from "./Engine.";
 
 export const goTo = (gameState: GAME_STATE) => {

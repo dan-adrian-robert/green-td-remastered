@@ -1,5 +1,5 @@
 import {Engine} from "../Engine.";
-import {Direction} from "../../types";
+import {Direction} from "../../types/types";
 
 export class CheckPoint {
 	x: number;

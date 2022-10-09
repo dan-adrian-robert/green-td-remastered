@@ -1,10 +1,10 @@
 import {calculateMousePos} from './UserActions';
-import {FPS} from "../config/globals";
+import {FPS} from "../config/Globals";
 import {Kamikaze} from "./objects/Kamikaze";
 import {roadAttributes} from "./objects/GameMap";
 import {Engine} from "./Engine.";
 import {resetGame} from "./objects/EngineSetup";
-import {MousePosition} from "../types";
+import {MousePosition} from "../types/types";
 import {BuildingPlace} from "./objects/BuildingPlace";
 
 export const handleMouseMove = (evt: any) => {
@@ -122,8 +122,6 @@ export const displaySelectedObject = (mousePos: MousePosition): void => {
 	}
 
 	const boxList: BuildingPlace[] =  Engine.getBoxList();
-
-	console.log(mousePos);
 
 	for (let i = 0; i < Engine.getBoxList().length; i++) {
 		const {px, py, sizeX, sizeY} = boxList[i];

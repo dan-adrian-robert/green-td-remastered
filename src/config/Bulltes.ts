@@ -1,6 +1,6 @@
-import {BULLET_EFFECT, BULLET_TYPE, BulletConfig} from "../types";
+import {BULLET_EFFECT, BULLET_TYPE, BulletConfig} from "../types/types";
 import {Engine} from "../engine/Engine.";
-import {FOLDER_PATHS} from "../imageTypes";
+import {FOLDER_PATHS} from "../types/imageTypes";
 
 export const bulletTypes: BulletConfig = {
     [BULLET_TYPE.FIRE]: {

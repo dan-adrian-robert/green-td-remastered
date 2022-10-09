@@ -1,10 +1,9 @@
 import {Hp} from "./Hp";
-import {Direction, MOB_TYPE} from "../../types";
+import {Direction, MOB_TYPE} from "../../types/types";
 import {Engine} from "../Engine.";
 import {Sprite} from "./Sprite";
-import {enemyTypes, getEnemyBounty, getEnemyDamange, getEnemyHp} from "../../config/enemyConfig";
+import {enemyTypes, getEnemyBounty, getEnemyDamange, getEnemyHp} from "../../config/Enemies";
 import {GameMap} from "./GameMap";
-import {SOUND_FOLDER_PATHS} from "../../SoundTypes";
 
 export class Enemy extends Sprite {
 	debuffs: any[];
@@ -25,7 +24,8 @@ export class Enemy extends Sprite {
 	dieSound: any;
 	healCD: any;
 
-	constructor(startX:number, startY:number, direction: Direction, indexCp: any, type: MOB_TYPE, hpMultiplier:number, dmgMultiplier:number, dieSound: any) {
+	constructor(startX:number, startY:number, direction: Direction, indexCp: any,
+				type: MOB_TYPE, hpMultiplier:number, dmgMultiplier:number, dieSound: any) {
 		const image = {}
 		super(image,0,0, enemyTypes[type].spriteWidth, enemyTypes[type].spriteHeight,
 			startX, startY,  enemyTypes[type].sizeX,  enemyTypes[type].sizeY);
@@ -58,12 +58,41 @@ export class Enemy extends Sprite {
 
 		this.dir = direction;
 		this.speed = enemyTypes[this.enemyType]['speed'];
-		this.hp = new Hp(this.px, this.py - 10, 20, 5, enemyTypes[this.enemyType]['hp'] * hpMultiplier);
+		this.hp = new Hp(this.px, this.py - 10, 40, 5, enemyTypes[this.enemyType]['hp'] * hpMultiplier);
 
 		switch (this.enemyType) {
 			case MOB_TYPE.footman:
 				this.image = Engine.getImageMap().MOBS.footman;
 				break
+			case MOB_TYPE.orcGrunt:
+				this.image = Engine.getImageMap().MOBS.grunt;
+				break
+			case MOB_TYPE.demolitionSquad:
+				this.image = Engine.getImageMap().MOBS.dwarvenDemolitionSquad;
+				break
+			case MOB_TYPE.knight:
+				this.image = Engine.getImageMap().MOBS.knight;
+				break
+			case MOB_TYPE.dragon:
+				this.image = Engine.getImageMap().MOBS.dragonBoss;
+				break
+			case MOB_TYPE.mage:
+				this.image = Engine.getImageMap().MOBS.mage;
+				break
+			case MOB_TYPE.orcRider:
+				this.image = Engine.getImageMap().MOBS.ogre;
+				break
+			case MOB_TYPE.gryphon:
+				this.image = Engine.getImageMap().MOBS.grifon;
+				break
+			case MOB_TYPE.archer:
+				this.image = Engine.getImageMap().MOBS.archer;
+				break
+			case MOB_TYPE.ogre:
+				this.image = Engine.getImageMap().MOBS.ogre;
+				break
+			default:
+				this.image = Engine.getImageMap().MOBS.footman;
 		}
 		this.currentCp = indexCp;
 

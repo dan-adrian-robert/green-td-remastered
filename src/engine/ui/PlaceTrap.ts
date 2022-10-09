@@ -1,9 +1,9 @@
 import {Trap} from "../objects/Trap";
 import {Engine} from "../Engine.";
-import {MousePosition, TRAP_TYPE, UI_SOUNDS} from "../../types";
+import {MousePosition, TRAP_TYPE, UI_SOUNDS} from "../../types/types";
 import {Sprite} from "../objects/Sprite";
-import {SOUND_FOLDER_PATHS} from "../../SoundTypes";
-import {TrapTypes} from "../../config/trapConfig";
+import {SOUND_FOLDER_PATHS} from "../../types/SoundTypes";
+import {TrapTypes} from "../../config/Traps";
 
 export class PlaceTrap extends Sprite {
 	buildMenuImage: any;

@@ -1,7 +1,7 @@
 import {Engine} from "../Engine.";
-import {Direction} from "../../types";
+import {Direction} from "../../types/types";
 import {Sprite} from "./Sprite";
-import {FOLDER_PATHS} from "../../imageTypes";
+import {FOLDER_PATHS} from "../../types/imageTypes";
 import {GameMap} from "./GameMap";
 
 export class Kamikaze extends Sprite {

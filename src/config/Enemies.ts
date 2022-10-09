@@ -1,4 +1,4 @@
-import {ENEMY_CONFIG, ENEMY_SOUNDS, MOB_TYPE} from "../types";
+import {ENEMY_CONFIG, ENEMY_SOUNDS, MOB_TYPE} from "../types/types";
 
 export const enemyTypes: ENEMY_CONFIG = {
     [MOB_TYPE.demolitionSquad]: {

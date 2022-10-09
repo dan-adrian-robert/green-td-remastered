@@ -1,5 +1,5 @@
 import {Engine} from "../Engine.";
-import {RoadAttribute} from "../../types";
+import {RoadAttribute} from "../../types/types";
 import {CheckPoint} from "./CheckPoint";
 
 export class GameMap {

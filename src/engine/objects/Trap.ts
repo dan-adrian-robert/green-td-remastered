@@ -1,9 +1,8 @@
 import {Engine} from "../Engine.";
-import {getTrapImages, getTrapMetadataData} from "../../config/trapConfig";
-import {TRAP_METADATA, TRAP_TYPE} from "../../types";
+import {getTrapImages, getTrapMetadataData} from "../../config/Traps";
+import {TRAP_METADATA, TRAP_TYPE} from "../../types/types";
 import {Sprite} from "./Sprite";
 import {Enemy} from "./Enemy";
-import {FOLDER_PATHS} from "../../imageTypes";
 
 export class Trap extends Sprite {
 	type: TRAP_TYPE;

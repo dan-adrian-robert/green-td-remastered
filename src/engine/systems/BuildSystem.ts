@@ -1,10 +1,10 @@
 import {Tower} from "../objects/Tower";
 import {Engine} from "../Engine.";
-import {FOLDER_PATHS} from "../../imageTypes";
+import {FOLDER_PATHS} from "../../types/imageTypes";
 import {BuildingPlace} from "../objects/BuildingPlace";
-import {BuildTowerMetaData, MousePosition, TOWER_TYPE, UI_SOUNDS} from "../../types";
-import {towerTypes} from "../../config/towerConfig";
-import {SOUND_FOLDER_PATHS} from "../../SoundTypes";
+import {BuildTowerMetaData, MousePosition, TOWER_TYPE, UI_SOUNDS} from "../../types/types";
+import {towerTypes} from "../../config/Towers";
+import {SOUND_FOLDER_PATHS} from "../../types/SoundTypes";
 
 export class BuildSystem {
 	buildMenuImage: any;

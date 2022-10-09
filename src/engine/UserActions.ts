@@ -1,7 +1,7 @@
 import {Border} from "./objects/Border";
 import {Engine} from "./Engine.";
-import { FOLDER_PATHS } from "../imageTypes";
-import {MousePosition} from "../types";
+import { FOLDER_PATHS } from "../types/imageTypes";
+import {MousePosition} from "../types/types";
 import {Enemy} from "./objects/Enemy";
 
 export const calculateMousePos = (evt: any): MousePosition => {
@@ -72,36 +72,37 @@ export const collideAlliesEnemies = () => {
  }
 
 export const collideTrapsEnemies = () => {
-	const listEnemy: Enemy[] = Engine.getEnemyList();
-	const listTraps = Engine.getAllyList();
+	/*
+const listEnemy: Enemy[] = Engine.getEnemyList();
+const listTraps = Engine.getAllyList();
 
-	for (let i = 0; i < listEnemy.length; i++) {
-		for (let j = 0; j < listTraps.length; j++) {
-			const ex = listEnemy[i].px + listEnemy[i].sizeX / 2;
-			const ey = listEnemy[i].py + listEnemy[i].sizeY / 2;
+    for (let i = 0; i < listEnemy.length; i++) {
+        for (let j = 0; j < listTraps.length; j++) {
+            const ex = listEnemy[i].px + listEnemy[i].sizeX / 2;
+            const ey = listEnemy[i].py + listEnemy[i].sizeY / 2;
 
-			const bx = listTraps[j].px + listTraps[j].sizeX / 2;
-			const by = listTraps[j].py + listTraps[j].sizeY / 2;
+            const bx = listTraps[j].px + listTraps[j].sizeX / 2;
+            const by = listTraps[j].py + listTraps[j].sizeY / 2;
 
-			const rx = (listEnemy[i].sizeX + listTraps[j].sizeX - 80) / 2;
-			const ry = (listEnemy[i].sizeY + listTraps[j].sizeY - 20) / 2;
+            const rx = (listEnemy[i].sizeX + listTraps[j].sizeX - 80) / 2;
+            const ry = (listEnemy[i].sizeY + listTraps[j].sizeY - 20) / 2;
 
-			/*
-			if (listTraps[j].enemies.includes(i + listEnemy[i].enemyType) === false &&
-				 		listTraps[j].enemies.length < listTraps[j].numberOfEnemies) {
-				 //collision happens
-				if(Math.abs(ex - bx) < rx &&
-				   Math.abs(ey - by) < ry) {
-						listEnemy[i].debuffs.push({"effect": listTraps[j].effect,
-													"effect_duration": listTraps[j].effectDuration,
-													"dmg": listTraps[j].damage,
-												})
-					 listTraps[j].enemies.push(i + listEnemy[i].enemyType);
-				}
-			}
-			*/
+
+            if (listTraps[j].enemies.includes(i + listEnemy[i].enemyType) === false &&
+                         listTraps[j].enemies.length < listTraps[j].numberOfEnemies) {
+                 //collision happens
+                if(Math.abs(ex - bx) < rx &&
+                   Math.abs(ey - by) < ry) {
+                        listEnemy[i].debuffs.push({"effect": listTraps[j].effect,
+                                                    "effect_duration": listTraps[j].effectDuration,
+                                                    "dmg": listTraps[j].damage,
+                                                })
+                     listTraps[j].enemies.push(i + listEnemy[i].enemyType);
+                }
+            }
 		}
 	}
+	*/
 }
 
 export const checkIfAllyOnFinalCp = (): void => {
@@ -190,7 +191,9 @@ export const initGame = () => {
 	//
 	//
 	//
+
 	const imageMap = Engine.getImageMap();
+	console.log(imageMap);
 
 	// Engine.setBorder( new Border(imageMap.ui.menuBorder, imageMap.ui.border, 500, 500,25,27))
 
