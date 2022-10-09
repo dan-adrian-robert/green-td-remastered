@@ -9,6 +9,7 @@ export class CheckPoint {
 	final: boolean;
 	id: number;
 
+
 	constructor(px: number, py: number, size: any, direction: Direction, id: number = 0, final: boolean = false) {
 		this.x = px;
 		this.y = py;
