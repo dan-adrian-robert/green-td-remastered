@@ -1,5 +1,5 @@
 import {BULLET_TYPE, TOWER_TYPE, TowerConfig} from "../types/types";
-import {Engine} from "../engine/Engine.";
+import {Engine} from "../Engine.";
 import {FOLDER_PATHS} from "../types/imageTypes";
 
 export const towerTypes: TowerConfig = {

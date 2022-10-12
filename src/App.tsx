@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
 import './App.css';
 import {CANVAS} from "./config/Globals";
-import './engine/Main';
-import {Engine} from "./engine/Engine.";
-import {setupGame} from "./engine/objects/EngineSetup";
+import './Main';
+import {Engine} from "./Engine.";
+import {setupGame} from "./utils/EngineSetup";
 import {Button, Stack} from "@mui/material";
-import { goTo, toggleCollisionRender } from "./engine/Debugger";
+import { goTo, toggleCollisionRender } from "./utils/Debugger";
 import {GAME_STATE} from "./types/types";
 
 

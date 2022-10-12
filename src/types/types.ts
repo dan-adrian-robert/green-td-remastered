@@ -155,12 +155,12 @@ export type BulletConfig = {
     [key in BULLET_TYPE]: {
         'bullet-speed': number,
         damage: number,
-        effect: EFFECT,
+        effect: BULLET_EFFECT,
         'time-effect': number,
     }
 }
 
-export enum EFFECT {
+export enum BULLET_EFFECT {
     NONE='NONE',
     BURN='BURN',
     SLOW='SLOW',
@@ -169,7 +169,7 @@ export enum EFFECT {
 }
 
 export type ACTIVE_EFFECTS = {
-    [key in EFFECT] : {
+    [key in BULLET_EFFECT] : {
         duration: number
         damage: number,
         slow: number,
@@ -178,7 +178,7 @@ export type ACTIVE_EFFECTS = {
 }
 
 export interface DEBUFF {
-    effect: EFFECT,
+    effect: BULLET_EFFECT,
     duration: number,
     damage: number,
 }
