@@ -206,17 +206,6 @@ export const handleKeyPressed = (event: any) => {
 	const code = event.keyCode;
 	Engine.getGameState().reset();
 	switch (code) {
-		// TODO CHANGE THIS
-		// case 76:
-		// 	if(Engine.getGameState().isGameStarted())
-		// 		tower.upgradeTower();
-		// 	break;
-		// //A
-		// case 65:
-		// 	if(gameState.isGameStarted())
-		// 		Engine.addEnemy(new Enemy( 210, 140, 35, 35, 35, 35, 0, 60, 'right', 2, 5));
-		// 	break;
-
 		case 82:
 			if (Engine.getGameState().isGameStarted()) {
 				Engine.getGameState().setRenderState();

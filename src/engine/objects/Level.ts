@@ -1,27 +1,51 @@
-import {GameTypes, MOB_TYPE} from "../../types/types";
+import {GameTypes, MOB_TYPE} from "../../types";
 
 const randomIntFromInterval = (min:number,max: number) => {
 	return Math.floor(Math.random()*(max-min+1)+min);
 };
 
 export class Level {
-	difficulty: GameTypes;
+	difficulty: any;
 	level: number;
 	multiplier: number;
 	numberEnemies: number;
 	typeEnemies: MOB_TYPE[];
-	spawnPoints: number[];
+	spawnPoints: any;
 	enemyList: MOB_TYPE[];
-	bossLVL: boolean;
+	bossLVL: any;
 
-	constructor(numLevel: number, difficulty:GameTypes, numberEnemies: number, typeEnemies: MOB_TYPE[], isBoss: any, spawnPoints: number[]) {
-		this.difficulty = difficulty;
+	constructor(numLevel: number, difficulty:any, numberEnemies: number, typeEnemies: MOB_TYPE[], isBoss: any, spawnPoints: any) {
+		if( difficulty === GameTypes.Easy ) {
+			this.difficulty = 1;
+		}
+		else if( difficulty === GameTypes.Medium) {
+			this.difficulty = 2;
+		}
+		else if( difficulty === GameTypes.Hard) {
+			this.difficulty = 3;
+		}else {
+			this.difficulty = 0;
+		}
+
 		this.level = numLevel;
-		//TODO take difficulty into account here
-		this.multiplier = this.level;
+		this.multiplier = this.difficulty * this.level;
 		this.numberEnemies = numberEnemies;
 		this.typeEnemies = typeEnemies;
+
+		if (Array.isArray(typeEnemies)) {
+			this.typeEnemies = typeEnemies;
+		} else {
+			this.typeEnemies = [typeEnemies];
+		}
+
 		this.spawnPoints = spawnPoints;
+
+		if(Array.isArray(spawnPoints)) {
+			this.spawnPoints = spawnPoints;
+		}
+		else {
+			this.spawnPoints = [spawnPoints];
+		}
 
 		this.enemyList = [];
 		this.bossLVL = isBoss;

@@ -20,8 +20,8 @@ export const collideBulletsEnemies = () => {
 	const listEnemy = Engine.getEnemyList();
 	const listBullets = Engine.getBulletList();
 
-	for(let i = 0; i < listEnemy.length; i++) {
-		for(let j = 0; j < listBullets.length; j++) {
+	for (let i = 0; i < listEnemy.length; i++) {
+		for (let j = 0; j < listBullets.length; j++) {
 				const ex = listEnemy[i].px + listEnemy[i].sizeX / 2;
 				const ey = listEnemy[i].py + listEnemy[i].sizeY / 2;
 
@@ -37,10 +37,10 @@ export const collideBulletsEnemies = () => {
 						listEnemy[i].hp.value -= listBullets[j].dmg;
 
 						// add bullet de-buff
-						listEnemy[i].debuffs.push({"effect": listBullets[j].effect,
-													"effect_duration": listBullets[j].effectDuration,
-													"dmg": listBullets[j].dmg,
-												})
+						listEnemy[i].addEffect({effect: listBullets[j].effect,
+													duration: listBullets[j].effectDuration,
+													damage: listBullets[j].dmg,
+												});
 						listBullets.splice(j,1);
 				}
 		}
@@ -214,7 +214,6 @@ export const initGame = () => {
 	//
 	// initEntities();
 	// initWorld();
-	// Engine.setLvlSystem(new LevelSystem(FPS));
 	// Engine.setLevel(new Level(1, "Easy", 10, ['footman', 'grunt'], 1, 0));
 }
 

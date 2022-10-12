@@ -3,11 +3,6 @@ import {Engine} from "./Engine.";
 import {renderLevel, renderMoney, renderObjectList} from "./Render";
 import {collideBulletsEnemies, collideEnemiesBase, eraseEnemies} from "./UserActions";
 
-export var inGameMenuCanvas: any = null;
-
-export var inGameMenuCanvasContext: any = null;
-export var statusCanvasContext: any = null;
-
 export const gameLoop = () => {
     if(Engine.getGameState().isSetDifficulty()) {
         Engine.getMenu().renderDifficulty();
@@ -44,7 +39,7 @@ export const gameLoop = () => {
         //Logic___________________________________________
         // trapObject.applyLogic(Engine.getTrapList());
 
-        Engine.applyEnemyLogic();
+        Engine.getEnemySystem().applyLogic(Engine.getEnemyList(), Engine.getMap());
 
         // allyObject.applyLogic(Engine.getAllyList(), Engine.getMap());
         Engine.getTowerSystem().applyLogic(Engine.getTowerList(), Engine.getEnemyList());

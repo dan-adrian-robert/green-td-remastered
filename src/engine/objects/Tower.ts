@@ -67,6 +67,10 @@ export class Tower extends Sprite {
 		];
 	}
 
+	setEnemiesInRange = (newEnemiesInRange: Enemy[]): void => {
+		this.enemysInRange = newEnemiesInRange;
+	}
+
 	upgrade(): void {
 		this.spriteIndex += 1;
 		this.spx = this.spSizeX * this.spriteIndex;
@@ -128,33 +132,9 @@ export class Tower extends Sprite {
 	// 	this.pozY = poz.y - this.sizeY/2;
 	// }
 
-	applyLogic(list: Tower[], enemyList: Enemy[]): void {
-		for (let i = 0; i < list.length; i++) {
-			list[i].getEnemyInRange(enemyList);
-			list[i].updateTowerShootingAngle();
-			list[i].shoot();
-			list[i].renderRange(Engine.getGameState().renderRange);
-		}
-	}
-
 	applySoundLogic() {
 		this.fireSound.volume = Engine.getSound().on? 0.1 : 0;
 		this.fireSound.play();
-	}
-
-	getEnemyInRange(enemyList: Enemy[]): void {
-		const rez = [];
-		for (let i = 0; i < enemyList.length; i++) {
-			const ex = enemyList[i].px;
-			const ey = enemyList[i].py;
-			const x = ex - this.px;
-			const y = ey - this.py;
-
-			if (x * x + y * y <= this.range * this.range) {
-				rez.push(enemyList[i]);
-			}
-		}
-		this.enemysInRange = rez;
 	}
 
 	upgradeRange(): void {
